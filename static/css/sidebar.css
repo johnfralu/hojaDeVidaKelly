@@ -109,6 +109,11 @@ body {
     align-items: center !important;
 }
 
+.sidebar:not(.expanded):not(.pinned) .sidebar-header * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
 .sidebar:not(.expanded):not(.pinned) .sidebar-brand {
     margin: 0 !important;
     padding: 0 !important;
