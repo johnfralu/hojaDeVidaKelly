@@ -209,185 +209,234 @@
     </div>
 </div>
 
-<!-- Experiencia Laboral Preview -->
-{% if config.mostrar_experiencia and experiencias %}
-<div class="container preview-section">
-    <div class="section-header">
-        <h2 class="section-title">
-            <i class="bi bi-briefcase-fill"></i>
-            Experiencia Laboral
-        </h2>
-        <a href="{% url 'curriculum:experiencia_laboral' %}" class="btn-ver-mas">
-            Ver más <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
-    
-    {% for exp in experiencias|slice:":3" %}
-    <div class="preview-card">
-        <h4 class="preview-card-title">{{ exp.cargodesempenado }}</h4>
-        <div class="preview-card-subtitle">
-            <i class="bi bi-building"></i>
-            {{ exp.nombreempresa }}
-        </div>
-        <div class="preview-card-date">
-            {{ exp.fechainiciogestion|date:"M Y" }} - 
-            {% if exp.fechafingestion %}{{ exp.fechafingestion|date:"M Y" }}{% else %}Actualidad{% endif %}
-        </div>
-        {% if exp.descripcionfunciones %}
-        <p class="preview-card-description mt-2">{{ exp.descripcionfunciones|truncatewords:30 }}</p>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<!-- Cursos Preview -->
-{% if config.mostrar_cursos and cursos %}
-<div class="container preview-section">
-    <div class="section-header">
-        <h2 class="section-title">
-            <i class="bi bi-book-fill"></i>
-            Cursos y Certificaciones
-        </h2>
-        <a href="{% url 'curriculum:cursos_realizados' %}" class="btn-ver-mas">
-            Ver más <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
-    
-    {% for curso in cursos|slice:":3" %}
-    <div class="preview-card">
-        <h4 class="preview-card-title">{{ curso.nombrecurso }}</h4>
-        <div class="preview-card-subtitle">
-            <i class="bi bi-mortarboard"></i>
-            {{ curso.entidadpatrocinadora }}
-        </div>
-        <div class="preview-card-date">
-            {{ curso.fechainicio|date:"M Y" }} - {{ curso.fechafin|date:"M Y" }}
-        </div>
-        {% if curso.totalhoras %}
-        <div class="preview-card-date">
-            <i class="bi bi-clock"></i> {{ curso.totalhoras }} horas
-        </div>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<!-- Reconocimientos Preview -->
-{% if config.mostrar_reconocimientos and reconocimientos %}
-<div class="container preview-section">
-    <div class="section-header">
-        <h2 class="section-title">
-            <i class="bi bi-trophy-fill"></i>
-            Reconocimientos y Logros
-        </h2>
-        <a href="{% url 'curriculum:reconocimientos' %}" class="btn-ver-mas">
-            Ver más <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
-    
-    {% for rec in reconocimientos|slice:":3" %}
-    <div class="preview-card">
-        <h4 class="preview-card-title">{{ rec.descripcionreconocimiento|truncatewords:10 }}</h4>
-        <div class="preview-card-subtitle">
-            <i class="bi bi-award"></i>
-            {{ rec.tiporeconocimiento }} - {{ rec.entidadpatrocinadora }}
-        </div>
-        {% if rec.fechareconocimiento %}
-        <div class="preview-card-date">{{ rec.fechareconocimiento|date:"M Y" }}</div>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<!-- Productos Académicos Preview -->
-{% if config.mostrar_productos_academicos and productos_academicos %}
-<div class="container preview-section">
-    <div class="section-header">
-        <h2 class="section-title">
-            <i class="bi bi-journal-text"></i>
-            Productos Académicos
-        </h2>
-        <a href="{% url 'curriculum:productos_academicos' %}" class="btn-ver-mas">
-            Ver más <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
-    
-    {% for prod in productos_academicos|slice:":3" %}
-    <div class="preview-card">
-        <h4 class="preview-card-title">{{ prod.nombrerecurso }}</h4>
-        <div class="preview-card-subtitle">
-            <i class="bi bi-tag"></i>
-            {{ prod.clasificador }}
-        </div>
-        {% if prod.descripcion %}
-        <p class="preview-card-description">{{ prod.descripcion|truncatewords:25 }}</p>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<!-- Productos Laborales Preview -->
-{% if config.mostrar_productos_laborales and productos_laborales %}
-<div class="container preview-section">
-    <div class="section-header">
-        <h2 class="section-title">
-            <i class="bi bi-folder-fill"></i>
-            Proyectos Laborales
-        </h2>
-        <a href="{% url 'curriculum:productos_laborales' %}" class="btn-ver-mas">
-            Ver más <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
-    
-    {% for prod in productos_laborales|slice:":3" %}
-    <div class="preview-card">
-        <h4 class="preview-card-title">{{ prod.nombreproducto }}</h4>
-        {% if prod.fechaproducto %}
-        <div class="preview-card-date">{{ prod.fechaproducto|date:"M Y" }}</div>
-        {% endif %}
-        {% if prod.descripcion %}
-        <p class="preview-card-description">{{ prod.descripcion|truncatewords:25 }}</p>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<!-- Venta Garage Preview -->
-{% if config.mostrar_venta_garage and productos_garage %}
-<div class="container preview-section">
-    <div class="section-header">
-        <h2 class="section-title">
-            <i class="bi bi-cart-fill"></i>
-            Venta Garage
-        </h2>
-        <a href="{% url 'curriculum:venta_garage' %}" class="btn-ver-mas">
-            Ir al Garage <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
-    
-    <div class="garage-grid">
-        {% for prod in productos_garage|slice:":4" %}
-        <div class="garage-item">
-            {% if prod.imagen_producto %}
-                <img src="{{ prod.imagen_producto.url }}" alt="{{ prod.nombreproducto }}">
-            {% else %}
-                <img src="{% static 'images/no-image.png' %}" alt="Sin imagen">
-            {% endif %}
-            <div class="garage-item-info">
-                <div class="garage-item-name">{{ prod.nombreproducto }}</div>
-                {% if prod.valordelbien %}
-                <div class="garage-item-price">${{ prod.valordelbien }}</div>
+<!-- Secciones de Preview en Grid 3x2 -->
+<div class="container">
+    <div class="row g-4 mb-5">
+        <!-- Experiencia Laboral Preview -->
+        {% if config.mostrar_experiencia %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-briefcase-fill"></i>
+                        Experiencia
+                    </h3>
+                    <a href="{% url 'curriculum:experiencia_laboral' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for exp in experiencias|slice:":3" %}
+                    <li class="preview-list-item">
+                        <i class="bi bi-circle-fill"></i>
+                        <span>{{ exp.cargodesempenado }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay experiencias registradas</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if experiencias|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:experiencia_laboral' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
                 {% endif %}
             </div>
         </div>
-        {% endfor %}
+        {% endif %}
+
+        <!-- Cursos Preview -->
+        {% if config.mostrar_cursos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-book-fill"></i>
+                        Cursos
+                    </h3>
+                    <a href="{% url 'curriculum:cursos_realizados' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for curso in cursos|slice:":3" %}
+                    <li class="preview-list-item">
+                        <i class="bi bi-circle-fill"></i>
+                        <span>{{ curso.nombrecurso }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay cursos registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if cursos|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:cursos_realizados' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Reconocimientos Preview -->
+        {% if config.mostrar_reconocimientos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-trophy-fill"></i>
+                        Logros
+                    </h3>
+                    <a href="{% url 'curriculum:reconocimientos' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for rec in reconocimientos|slice:":2" %}
+                    <li class="preview-list-item-extended">
+                        <div class="logro-tipo">
+                            <i class="bi bi-award"></i>
+                            {{ rec.tiporeconocimiento }}
+                        </div>
+                        <div class="logro-fecha">{{ rec.fechareconocimiento|date:"Y" }}</div>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay reconocimientos registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if reconocimientos|length > 2 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:reconocimientos' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Productos Académicos Preview -->
+        {% if config.mostrar_productos_academicos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-journal-text"></i>
+                        Académicos
+                    </h3>
+                    <a href="{% url 'curriculum:productos_academicos' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for prod in productos_academicos|slice:":3" %}
+                    <li class="preview-list-item">
+                        <i class="bi bi-circle-fill"></i>
+                        <span>{{ prod.nombrerecurso }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay productos académicos registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if productos_academicos|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:productos_academicos' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Productos Laborales Preview -->
+        {% if config.mostrar_productos_laborales %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-folder-fill"></i>
+                        Laborales
+                    </h3>
+                    <a href="{% url 'curriculum:productos_laborales' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for prod in productos_laborales|slice:":3" %}
+                    <li class="preview-list-item">
+                        <i class="bi bi-circle-fill"></i>
+                        <span>{{ prod.nombreproducto }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay productos laborales registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if productos_laborales|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:productos_laborales' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Venta Garage Preview -->
+        {% if config.mostrar_venta_garage %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-cart-fill"></i>
+                        Garage
+                    </h3>
+                    <a href="{% url 'curriculum:venta_garage' %}" class="btn-ver-mas-compact">
+                        Ir al Garage <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="garage-preview-mini">
+                    {% for prod in productos_garage|slice:":4" %}
+                    <div class="garage-mini-item">
+                        {% if prod.imagen_producto %}
+                            <img src="{{ prod.imagen_producto.url }}" alt="{{ prod.nombreproducto }}">
+                        {% else %}
+                            <div class="garage-no-image">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        {% endif %}
+                        <span class="garage-mini-name">{{ prod.nombreproducto|truncatewords:2 }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="preview-list-empty">No hay productos en venta</p>
+                    {% endfor %}
+                </div>
+                
+                {% if productos_garage|length > 4 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:venta_garage' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todos
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
-{% endif %}
 
 {% endblock %}

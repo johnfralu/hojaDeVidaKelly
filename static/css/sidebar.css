@@ -194,6 +194,8 @@ body {
     padding: 2rem 0;
 }
 
+/* Cuando el sidebar está expandido (hover o pinned) */
+.sidebar.expanded ~ .main-content,
 .sidebar.pinned ~ .main-content {
     margin-left: var(--sidebar-width-expanded);
 }
@@ -212,6 +214,8 @@ body {
     margin-top: 3rem;
 }
 
+/* Cuando el sidebar está expandido (hover o pinned) */
+.sidebar.expanded ~ .footer,
 .sidebar.pinned ~ .footer {
     margin-left: var(--sidebar-width-expanded);
 }
