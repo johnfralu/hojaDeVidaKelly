@@ -605,3 +605,31 @@ body {
 .sidebar:not(.expanded):not(.pinned) * {
     overflow: hidden !important;
 }
+
+/* RESET ESPECÍFICO PARA EL LOGO SUPERIOR EN MODO CONTRAÍDO */
+.sidebar:not(.expanded):not(.pinned) .sidebar-header {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.sidebar:not(.expanded):not(.pinned) .sidebar-brand {
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    margin: 0 !important;
+}
+
+/* Forzamos que el icono ignore cualquier ancho mínimo previo */
+.sidebar:not(.expanded):not(.pinned) .sidebar-brand i {
+    min-width: 0 !important; 
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: block !important;
+    text-align: center !important;
+}
+
+/* Ocultar el texto con display none para que no ocupe ni un pixel de espacio */
+.sidebar:not(.expanded):not(.pinned) .sidebar-brand .sidebar-text {
+    display: none !important;
+}
