@@ -101,6 +101,25 @@ body {
     flex-shrink: 0;
 }
 
+/* Asegura que el header se adapte al ancho contraído */
+.sidebar:not(.expanded):not(.pinned) .sidebar-header {
+    padding: 1rem 0 !important;
+    justify-content: center; /* Centra el icono */
+}
+
+/* Fuerza a que el icono de la marca sea visible */
+.sidebar:not(.expanded):not(.pinned) .sidebar-brand {
+    justify-content: center;
+    width: 100%;
+    gap: 0; /* Quita el espacio del texto que está oculto */
+}
+
+.sidebar:not(.expanded):not(.pinned) .sidebar-brand i {
+    margin: 0 !important;
+    font-size: 1.4rem; /* Tamaño original del icono azul */
+    display: block !important; /* Asegura que no se oculte */
+}
+
 /* .sidebar-text genérico: oculto en contraído, visible en expandido */
 .sidebar-text {
     opacity: 0;
@@ -371,6 +390,7 @@ body {
 
 .sidebar:not(.expanded):not(.pinned) .sidebar-btn-config .sidebar-text {
     display: none !important; /* Asegura que el texto no ocupe espacio invisible */
+    opacity: 0;
 }
 
 .sidebar-btn-config i {
