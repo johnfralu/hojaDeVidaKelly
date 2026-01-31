@@ -5,10 +5,14 @@
 :root {
     --sidebar-width-collapsed: 70px;
     --sidebar-width-expanded: 260px;
-    --sidebar-bg: #2c3e50;
-    --sidebar-hover: #34495e;
-    --sidebar-active: #3498db;
-    --sidebar-text: #ecf0f1;
+    
+    /* Colores Pastel */
+    --sidebar-bg: #f0f4f8;           /* Fondo claro y suave */
+    --sidebar-hover: #e2e8f0;        /* Un tono apenas más oscuro para el hover */
+    --sidebar-active: #718096;       /* Color de énfasis para iconos activos */
+    --sidebar-text: #2d3748;         /* Texto oscuro pero no negro puro */
+    --sidebar-accent: #b2b2ff;       /* Un toque de color pastel (Lavanda) */
+    
     --transition-speed: 0.3s;
 }
 
@@ -65,6 +69,8 @@ body {
     overflow-x: hidden !important; /* Fuerza la desaparición del scroll horizontal */
     overflow-y: hidden !important;
     white-space: nowrap;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05); /* Sombra mucho más sutil */
+    border-right: 1px solid #e2e8f0; /* Añade un borde fino para separar del contenido */
 }
 
 /* Expandido por hover o por pin */
@@ -212,8 +218,9 @@ body {
 }
 
 .sidebar-btn-pdf {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    color: #4a5568; /* Texto gris oscuro para que sea legible sobre el pastel */
+    box-shadow: 0 4px 10px rgba(161, 196, 253, 0.3);
     border: none;
     padding: 0.4rem 1rem;
     border-radius: 20px;
@@ -327,9 +334,9 @@ body {
 
 .sidebar-btn-config {
     width: 100%;
-    background: rgba(255, 255, 255, 0.07);
-    color: rgba(255, 255, 255, 0.6);
-    border: 1px dashed rgba(255, 255, 255, 0.25);
+    background: #ffffff;
+    color: var(--sidebar-text);
+    border: 1px solid #cbd5e0;
     padding: 0.5rem 0.8rem;
     border-radius: 6px;
     font-size: 0.8rem;
@@ -402,6 +409,7 @@ body {
    ========================================== */
 
 .main-content {
+    background-color: #f7fafc; /* Blanco hueso pastel */
     margin-left: var(--sidebar-width-collapsed);
     transition: margin-left var(--transition-speed) ease;
     min-height: 100vh;
