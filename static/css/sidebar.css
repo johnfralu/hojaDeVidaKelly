@@ -62,6 +62,7 @@ body {
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
+    overflow-x: hidden !important; /* Fuerza la desaparición del scroll horizontal */
 }
 
 /* Expandido por hover o por pin */
@@ -330,6 +331,28 @@ body {
     justify-content: center;
     gap: 0.5rem;
     white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Cuando la sidebar NO está expandida ni pinned (es decir, está contraída) */
+.sidebar:not(.expanded):not(.pinned) .sidebar-config {
+    padding: 0.7rem 0; /* Ajustamos el padding lateral a 0 */
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar:not(.expanded):not(.pinned) .sidebar-btn-config {
+    width: 44px;      /* Forzamos un ancho fijo circular o cuadrado pequeño */
+    height: 44px;
+    padding: 0;
+    border: none;     /* Eliminamos el borde punteado que se ve mal en la imagen */
+    background: transparent; /* Opcional: para que solo se vea el icono */
+}
+
+/* Aseguramos que el icono se vea grande y centrado en el modo contraído */
+.sidebar:not(.expanded):not(.pinned) .sidebar-btn-config i {
+    font-size: 1.2rem; 
+    margin: 0;
 }
 
 .sidebar-btn-config i {
