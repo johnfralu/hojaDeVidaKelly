@@ -309,10 +309,12 @@ body {
    BOTÓN CONFIGURAR SECCIONES
    ========================================== */
 
+/* Estilo base del contenedor */
 .sidebar-config {
     flex-shrink: 0;
     padding: 0.7rem 0.8rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: padding var(--transition-speed);
 }
 
 .sidebar-btn-config {
@@ -334,25 +336,24 @@ body {
     overflow: hidden;
 }
 
-/* Cuando la sidebar NO está expandida ni pinned (es decir, está contraída) */
+/* AJUSTE CUANDO ESTÁ CONTRAÍDO */
 .sidebar:not(.expanded):not(.pinned) .sidebar-config {
-    padding: 0.7rem 0; /* Ajustamos el padding lateral a 0 */
+    padding: 0.7rem 5px; /* Reducimos padding para que no desborde */
     display: flex;
     justify-content: center;
 }
 
 .sidebar:not(.expanded):not(.pinned) .sidebar-btn-config {
-    width: 44px;      /* Forzamos un ancho fijo circular o cuadrado pequeño */
+    width: 44px;         /* Lo hacemos cuadrado */
     height: 44px;
     padding: 0;
-    border: none;     /* Eliminamos el borde punteado que se ve mal en la imagen */
-    background: transparent; /* Opcional: para que solo se vea el icono */
+    justify-content: center;
+    border: none;        /* Quitamos el borde punteado que causa el scroll */
 }
 
-/* Aseguramos que el icono se vea grande y centrado en el modo contraído */
 .sidebar:not(.expanded):not(.pinned) .sidebar-btn-config i {
-    font-size: 1.2rem; 
     margin: 0;
+    font-size: 1.2rem;   /* Icono de ajustes centrado */
 }
 
 .sidebar-btn-config i {
