@@ -20,7 +20,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
 }
 
 /* ==========================================
@@ -63,6 +63,8 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden !important; /* Fuerza la desaparición del scroll horizontal */
+    overflow-y: hidden !important;
+    white-space: nowrap;
 }
 
 /* Expandido por hover o por pin */
@@ -336,24 +338,27 @@ body {
     overflow: hidden;
 }
 
-/* AJUSTE CUANDO ESTÁ CONTRAÍDO */
+/* Cuando el menú NO está expandido ni pinned */
 .sidebar:not(.expanded):not(.pinned) .sidebar-config {
-    padding: 0.7rem 5px; /* Reducimos padding para que no desborde */
+    padding: 0.7rem 0 !important; /* Forzamos padding lateral cero */
+    width: var(--sidebar-width-collapsed); /* Forzamos que mida exactamente 70px */
     display: flex;
     justify-content: center;
 }
 
 .sidebar:not(.expanded):not(.pinned) .sidebar-btn-config {
-    width: 44px;         /* Lo hacemos cuadrado */
-    height: 44px;
-    padding: 0;
-    justify-content: center;
-    border: none;        /* Quitamos el borde punteado que causa el scroll */
+    width: 40px !important;      /* Lo hacemos más pequeño que los 70px */
+    height: 40px !important;
+    padding: 0 !important;
+    border: none !important;     /* Eliminamos el borde punteado que causa el scroll */
+    background: transparent !important;
+    box-shadow: none !important;
 }
 
 .sidebar:not(.expanded):not(.pinned) .sidebar-btn-config i {
-    margin: 0;
-    font-size: 1.2rem;   /* Icono de ajustes centrado */
+    margin: 0 !important;
+    font-size: 1.2rem;
+    display: block;              /* Centrado perfecto */
 }
 
 .sidebar-btn-config i {
