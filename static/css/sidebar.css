@@ -104,20 +104,25 @@ body {
 /* Asegura que el header se adapte al ancho contraído */
 .sidebar:not(.expanded):not(.pinned) .sidebar-header {
     padding: 1rem 0 !important;
+    display: flex;
     justify-content: center; /* Centra el icono */
+    width: 100%;
 }
 
-/* Fuerza a que el icono de la marca sea visible */
+/* Centra el icono azul de la marca */
 .sidebar:not(.expanded):not(.pinned) .sidebar-brand {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex;
     justify-content: center;
     width: 100%;
-    gap: 0; /* Quita el espacio del texto que está oculto */
 }
 
 .sidebar:not(.expanded):not(.pinned) .sidebar-brand i {
-    margin: 0 !important;
-    font-size: 1.4rem; /* Tamaño original del icono azul */
-    display: block !important; /* Asegura que no se oculte */
+    margin: 0 !important; /* Elimina cualquier margen residual que lo empuje a la izquierda */
+    padding: 0 !important;
+    min-width: 0 !important; /* Quita el ancho mínimo que definimos antes */
+    text-align: center;
 }
 
 /* .sidebar-text genérico: oculto en contraído, visible en expandido */
