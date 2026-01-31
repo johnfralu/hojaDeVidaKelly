@@ -433,3 +433,130 @@ footer {
     background-color: #818cf8;
     color: white;
 }
+
+/* Paleta Amarillo Pastel para Reconocimientos */
+:root {
+    --rec-yellow-main: #F59E0B; /* Ámbar/Amarillo para énfasis */
+    --rec-yellow-soft: #FEF3C7; /* Fondo amarillo crema pastel */
+    --rec-text-dark: #4B5563;
+}
+
+.section-title-rec {
+    color: var(--rec-text-dark);
+}
+
+.custom-hr-rec {
+    width: 80px;
+    height: 5px;
+    background: var(--rec-yellow-main);
+    border-radius: 10px;
+}
+
+/* Contenedor Principal de la Fila de Reconocimiento */
+.recognition-container {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    border-left: 8px solid var(--rec-yellow-main);
+    transition: transform 0.3s ease;
+}
+
+.recognition-container:hover {
+    transform: scale(1.01);
+}
+
+/* Columna Izquierda */
+.badge-year-pastel {
+    background-color: var(--rec-yellow-soft);
+    color: var(--rec-yellow-main);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.rec-title {
+    font-weight: 800;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.rec-institution {
+    color: var(--rec-yellow-main);
+    font-weight: 600;
+}
+
+.soft-hr {
+    border: 0;
+    border-top: 1px solid #F3F4F6;
+    margin: 1.5rem 0;
+}
+
+.rec-description h6 {
+    font-weight: 700;
+    color: var(--rec-text-dark);
+    margin-bottom: 0.8rem;
+}
+
+.rec-description p {
+    color: #6B7280;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Columna Derecha (Preview) */
+.bg-light-preview {
+    background-color: #F9FAFB;
+    border-left: 1px solid #F3F4F6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pdf-preview-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+/* Botón PDF Nueva Pestaña */
+.btn-pdf-new-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #EF4444; /* Rojo PDF */
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-pdf-new-tab:hover {
+    background-color: #DC2626;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+}
+
+/* Placeholder cuando no hay PDF */
+.no-pdf-placeholder {
+    padding: 3rem;
+    color: #D1D5DB;
+}
+
+.no-pdf-placeholder i {
+    font-size: 4rem;
+}
+
+/* Estilo Alert Amarillo */
+.alert-yellow-pastel {
+    background-color: var(--rec-yellow-soft);
+    color: #92400E;
+    border: none;
+    border-radius: 15px;
+}
