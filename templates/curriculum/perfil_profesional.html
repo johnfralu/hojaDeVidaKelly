@@ -248,6 +248,45 @@
         </div>
         {% endif %}
 
+        <!-- Reconocimientos Preview -->
+        {% if config.mostrar_reconocimientos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-trophy-fill"></i>
+                        Reconocimientos
+                    </h3>
+                    <a href="{% url 'curriculum:reconocimientos' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for rec in reconocimientos|slice:":2" %}
+                    <li class="preview-list-item-extended">
+                        <div class="logro-tipo">
+                            <i class="bi bi-award"></i>
+                            {{ rec.tiporeconocimiento }}
+                        </div>
+                        <div class="logro-fecha">{{ rec.fechareconocimiento|date:"Y" }}</div>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay reconocimientos registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if reconocimientos|length > 2 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:reconocimientos' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Cursos Preview -->
         {% if config.mostrar_cursos %}
         <div class="col-lg-4 col-md-6">
@@ -276,45 +315,6 @@
                 {% if cursos|length > 3 %}
                 <div class="text-end mt-2">
                     <a href="{% url 'curriculum:cursos_realizados' %}" class="link-ver-todas">
-                        <i class="bi bi-arrow-right-circle"></i> Ver todas
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Reconocimientos Preview -->
-        {% if config.mostrar_reconocimientos %}
-        <div class="col-lg-4 col-md-6">
-            <div class="preview-section-compact">
-                <div class="section-header-compact">
-                    <h3 class="section-title-compact">
-                        <i class="bi bi-trophy-fill"></i>
-                        Logros
-                    </h3>
-                    <a href="{% url 'curriculum:reconocimientos' %}" class="btn-ver-mas-compact">
-                        Ver más <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-                
-                <ul class="preview-list">
-                    {% for rec in reconocimientos|slice:":2" %}
-                    <li class="preview-list-item-extended">
-                        <div class="logro-tipo">
-                            <i class="bi bi-award"></i>
-                            {{ rec.tiporeconocimiento }}
-                        </div>
-                        <div class="logro-fecha">{{ rec.fechareconocimiento|date:"Y" }}</div>
-                    </li>
-                    {% empty %}
-                    <li class="preview-list-empty">No hay reconocimientos registrados</li>
-                    {% endfor %}
-                </ul>
-                
-                {% if reconocimientos|length > 2 %}
-                <div class="text-end mt-2">
-                    <a href="{% url 'curriculum:reconocimientos' %}" class="link-ver-todas">
                         <i class="bi bi-arrow-right-circle"></i> Ver todas
                     </a>
                 </div>

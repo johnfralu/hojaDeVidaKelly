@@ -17,6 +17,11 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- Barra de Progreso Superior -->
+    <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <!-- Header del Sidebar -->
@@ -27,6 +32,21 @@
             </div>
             <button class="btn-pin" id="btnPin" title="Fijar menú">
                 <i class="bi bi-pin-angle"></i>
+            </button>
+        </div>
+
+        <!-- Foto de perfil en sidebar -->
+        <div class="sidebar-perfil">
+            {% if perfil and perfil.foto_perfil %}
+                <img src="{{ perfil.foto_perfil.url }}" alt="{{ perfil.nombres }}" class="sidebar-foto">
+            {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" alt="Foto de perfil" class="sidebar-foto">
+            {% endif %}
+            <span class="sidebar-text sidebar-nombre">
+                {% if perfil %}{{ perfil.nombres|cut:" " }} {{ perfil.apellidos|cut:" " }}{% endif %}
+            </span>
+            <button class="sidebar-btn-pdf sidebar-text" data-bs-toggle="modal" data-bs-target="#pdfModal" title="Generar PDF">
+                <i class="bi bi-file-earmark-pdf"></i> Generar PDF
             </button>
         </div>
 
@@ -102,6 +122,13 @@
             </li>
             {% endif %}
         </ul>
+
+        <!-- Botón de Configuración dentro del sidebar -->
+        <div class="sidebar-config">
+            <button class="sidebar-btn-config sidebar-text" data-bs-toggle="modal" data-bs-target="#configModal">
+                <i class="bi bi-sliders"></i> <span>Configurar Secciones</span>
+            </button>
+        </div>
     </div>
 
     <!-- Overlay para móviles -->
@@ -120,29 +147,21 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" id="footer">
         <div class="container-fluid">
-            <p class="mb-0">© {% now "Y" %} - Hoja de Vida Automatizada</p>
-            {% if perfil %}
-            <p class="mb-0">{{ perfil.nombres }} {{ perfil.apellidos }}</p>
-            {% endif %}
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p class="mb-0">© {% now "Y" %} - Hoja de Vida Automatizada</p>
+                    {% if perfil %}
+                    <p class="mb-0">{{ perfil.nombres }} {{ perfil.apellidos }}</p>
+                    {% endif %}
+                </div>
+                <a href="/admin/" target="_blank" class="footer-btn-admin" title="Administración">
+                    <i class="bi bi-gear-fill"></i> Admin
+                </a>
+            </div>
         </div>
     </footer>
-
-    <!-- Botones de Configuración Flotante -->
-    <div class="floating-buttons-container">
-        <a href="/admin/" target="_blank" class="btn-float btn-admin" title="Administración">
-            <i class="bi bi-gear-fill"></i>
-        </a>
-
-        <button class="btn-float btn-config" data-bs-toggle="modal" data-bs-target="#configModal" title="Configuración de Secciones">
-            <i class="bi bi-sliders"></i>
-        </button>
-
-        <button class="btn-float btn-pdf" data-bs-toggle="modal" data-bs-target="#pdfModal" title="Generar PDF">
-            <i class="bi bi-file-earmark-pdf"></i>
-        </button>
-    </div>
 
     <!-- Modal de Configuración -->
     <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
@@ -286,9 +305,10 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Scripts personalizados -->
     <script>
-        // Función para obtener el token CSRF
+        // ==========================================
+        // CSRF TOKEN
+        // ==========================================
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -304,7 +324,102 @@
             return cookieValue;
         }
 
-        // Guardar configuración de secciones
+        // ==========================================
+        // BARRA DE PROGRESO DE SCROLL
+        // ==========================================
+        const progressBar = document.getElementById('progressBar');
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = progress + '%';
+        });
+
+        // ==========================================
+        // SIDEBAR
+        // ==========================================
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const btnPin = document.getElementById('btnPin');
+        const btnMobileMenu = document.getElementById('btnMobileMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        let isPinned = localStorage.getItem('sidebarPinned') === 'true';
+        let hoverTimeout;
+
+        if (isPinned) {
+            sidebar.classList.add('pinned');
+            btnPin.classList.add('pinned');
+        }
+
+        sidebar.addEventListener('mouseenter', function() {
+            if (!isPinned && window.innerWidth > 768) {
+                clearTimeout(hoverTimeout);
+                sidebar.classList.add('expanded');
+            }
+        });
+
+        sidebar.addEventListener('mouseleave', function() {
+            if (!isPinned && window.innerWidth > 768) {
+                hoverTimeout = setTimeout(() => {
+                    sidebar.classList.remove('expanded');
+                }, 300);
+            }
+        });
+
+        btnPin.addEventListener('click', function(e) {
+            e.stopPropagation();
+            isPinned = !isPinned;
+            
+            if (isPinned) {
+                sidebar.classList.add('pinned');
+                btnPin.classList.add('pinned');
+                btnPin.title = 'Desfijar menú';
+            } else {
+                sidebar.classList.remove('pinned');
+                btnPin.classList.remove('pinned');
+                btnPin.title = 'Fijar menú';
+                sidebar.classList.remove('expanded');
+            }
+            
+            localStorage.setItem('sidebarPinned', isPinned);
+        });
+
+        // Menú móvil
+        btnMobileMenu.addEventListener('click', function() {
+            sidebar.classList.toggle('mobile-open');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+        });
+
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('mobile-open');
+                    sidebarOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // ==========================================
+        // CONFIGURACIÓN DE SECCIONES
+        // ==========================================
         document.getElementById('btnGuardarConfig').addEventListener('click', function() {
             const csrftoken = getCookie('csrftoken');
             
@@ -340,7 +455,9 @@
             });
         });
 
-        // Control del botón Generar PDF
+        // ==========================================
+        // GENERAR PDF
+        // ==========================================
         const pdfSections = document.querySelectorAll('.pdf-section');
         const btnGenerarPDF = document.getElementById('btnGenerarPDF');
 
@@ -353,10 +470,8 @@
             checkbox.addEventListener('change', updatePDFButton);
         });
 
-        // Ejecutar al cargar la página
         updatePDFButton();
 
-        // Generar PDF
         btnGenerarPDF.addEventListener('click', function() {
             const selectedSections = [];
             
@@ -375,7 +490,6 @@
 
             const csrftoken = getCookie('csrftoken');
             
-            // Mostrar mensaje de carga
             btnGenerarPDF.disabled = true;
             btnGenerarPDF.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generando...';
 
@@ -392,25 +506,18 @@
                 return response.blob();
             })
             .then(blob => {
-                // Crear URL del blob
                 const url = window.URL.createObjectURL(blob);
-                
-                // Abrir en nueva pestaña
                 const nuevaPestana = window.open(url, '_blank');
 
-                // Si el navegador bloqueó el pop-up, avisamos al usuario
                 if (!nuevaPestana) {
                     alert('Por favor, permite las ventanas emergentes para ver el PDF');
                 }
                 
-                // Limpiar la URL después de un momento
                 setTimeout(() => window.URL.revokeObjectURL(url), 100);
                 
-                // Cerrar modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('pdfModal'));
                 modal.hide();
                 
-                // Restaurar botón
                 btnGenerarPDF.disabled = false;
                 btnGenerarPDF.innerHTML = 'Generar';
             })
@@ -422,99 +529,14 @@
             });
         });
 
+        // ==========================================
+        // MODAL DE IMAGEN
+        // ==========================================
         function ampliarImagen(src) {
-            // Insertamos la ruta de la imagen en el modal
             document.getElementById('modalImage').src = src;
-            // Mostramos el modal
             const miModal = new bootstrap.Modal(document.getElementById('imageModal'));
             miModal.show();
         }
-
-        // ==========================================
-        // FUNCIONALIDAD DEL SIDEBAR
-        // ==========================================
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        const btnPin = document.getElementById('btnPin');
-        const btnMobileMenu = document.getElementById('btnMobileMenu');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-        
-        let isPinned = localStorage.getItem('sidebarPinned') === 'true';
-        let hoverTimeout;
-
-        // Aplicar estado inicial del pin
-        if (isPinned) {
-            sidebar.classList.add('pinned');
-            btnPin.classList.add('pinned');
-        }
-
-        // Hover para expandir (solo si no está fijado)
-        sidebar.addEventListener('mouseenter', function() {
-            if (!isPinned && window.innerWidth > 768) {
-                clearTimeout(hoverTimeout);
-                sidebar.classList.add('expanded');
-            }
-        });
-
-        sidebar.addEventListener('mouseleave', function() {
-            if (!isPinned && window.innerWidth > 768) {
-                hoverTimeout = setTimeout(() => {
-                    sidebar.classList.remove('expanded');
-                }, 300);
-            }
-        });
-
-        // Botón de fijar/desfijar
-        btnPin.addEventListener('click', function(e) {
-            e.stopPropagation();
-            isPinned = !isPinned;
-            
-            if (isPinned) {
-                sidebar.classList.add('pinned');
-                btnPin.classList.add('pinned');
-                btnPin.title = 'Desfijar menú';
-            } else {
-                sidebar.classList.remove('pinned');
-                btnPin.classList.remove('pinned');
-                btnPin.title = 'Fijar menú';
-                sidebar.classList.remove('expanded');
-            }
-            
-            localStorage.setItem('sidebarPinned', isPinned);
-        });
-
-        // Menú móvil
-        btnMobileMenu.addEventListener('click', function() {
-            sidebar.classList.toggle('mobile-open');
-            sidebarOverlay.classList.toggle('active');
-            document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
-        });
-
-        sidebarOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('mobile-open');
-            sidebarOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        // Cerrar menú móvil al hacer clic en un enlace
-        document.querySelectorAll('.sidebar-nav a').forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('mobile-open');
-                    sidebarOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
-
-        // Ajustar en cambio de tamaño de ventana
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('mobile-open');
-                sidebarOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
     </script>
     {% block extra_js %}{% endblock %}
 </body>
