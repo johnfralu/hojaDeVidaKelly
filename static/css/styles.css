@@ -72,14 +72,16 @@ p, li, div {
 /* Cards */
 .card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 10px;
+    border-radius: 20px; /* Bordes más redondos */
     overflow: hidden;
-    margin-bottom: 2rem; /* Más espacio entre cards */
+    margin-bottom: 2rem;
+    border: none; /* Quitamos bordes rústicos */
+    background-color: #ffffff;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,.15) !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,.08) !important;
 }
 
 .card-header {
@@ -255,7 +257,7 @@ footer {
 
 /* Colores personalizados */
 .bg-primary {
-    background-color: #0d6efd !important;
+    background-color: #818cf8 !important; /* Lavanda */
 }
 
 .bg-success {
@@ -371,4 +373,63 @@ footer {
 #imageModal .modal-content {
     background-color: transparent;
     box-shadow: 0 0 20px rgba(13, 110, 253, 0.5); /* Brillo azul suave */
+}
+
+/* Específicos para Experiencia Laboral */
+.section-title-exp {
+    color: #374151;
+    font-weight: 800;
+}
+
+.custom-hr-exp {
+    width: 80px;
+    height: 5px;
+    background: #818cf8; /* Color Lavanda */
+    border: none;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+.experience-card-pastel {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+    border-left: 6px solid #818cf8; /* Línea lavanda lateral */
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 1.2rem;
+    margin-bottom: 1.2rem;
+}
+
+.badge-date-pastel {
+    background-color: #e0e7ff;
+    color: #818cf8;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.btn-pastel-doc {
+    text-decoration: none;
+    color: #818cf8;
+    border: 2px solid #e0e7ff;
+    padding: 0.6rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-pastel-doc:hover {
+    background-color: #818cf8;
+    color: white;
 }
