@@ -191,6 +191,7 @@ body {
     transition: margin-left var(--transition-speed) ease;
     min-height: 100vh;
     background: #f8f9fa;
+    padding: 2rem 0;
 }
 
 .sidebar.pinned ~ .main-content {
@@ -208,6 +209,7 @@ body {
     color: white;
     text-align: center;
     padding: 2rem 1rem;
+    margin-top: 3rem;
 }
 
 .sidebar.pinned ~ .footer {
@@ -215,7 +217,7 @@ body {
 }
 
 /* ==========================================
-   BOTONES FLOTANTES
+   FLOATING BUTTONS - Ajuste de posición
    ========================================== */
 
 .floating-buttons-container {
@@ -226,6 +228,12 @@ body {
     flex-direction: column;
     gap: 15px;
     z-index: 999;
+    transition: right var(--transition-speed) ease;
+}
+
+/* Los botones flotantes se ajustan cuando el sidebar está fijado */
+.sidebar.pinned ~ * .floating-buttons-container {
+    right: calc(30px + var(--sidebar-width-expanded) - var(--sidebar-width-collapsed));
 }
 
 .btn-float {

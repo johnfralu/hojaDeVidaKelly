@@ -31,14 +31,28 @@ def get_configuracion(perfil):
     return config
 
 def perfil_profesional(request):
-    """Vista principal - Perfil Profesional"""
-    perfil = get_perfil_activo()
-    config = get_configuracion(perfil) if perfil else None
+    perfil = DatosPersonales.objects.first()
+    config = ConfiguracionSecciones.objects.first()
+    
+    # Obtener previews de cada sección (solo los activos)
+    experiencias = ExperienciaLaboral.objects.filter(activarparaqueseveaenfront=True).order_by('-fechainiciogestion')
+    cursos = CursosRealizados.objects.filter(activarparaqueseveaenfront=True).order_by('-fechainicio')
+    reconocimientos = Reconocimientos.objects.filter(activarparaqueseveaenfront=True).order_by('-fechareconocimiento')
+    productos_academicos = ProductosAcademicos.objects.filter(activarparaqueseveaenfront=True).order_by('-idproductoacademico')
+    productos_laborales = ProductosLaborales.objects.filter(activarparaqueseveaenfront=True).order_by('-fechaproducto')
+    productos_garage = VentaGarage.objects.filter(activarparaqueseveaenfront=True).order_by('-idventagarage')
+    
     context = {
         'perfil': perfil,
         'config': config,
-        'page_title': 'Perfil Profesional'
+        'experiencias': experiencias,
+        'cursos': cursos,
+        'reconocimientos': reconocimientos,
+        'productos_academicos': productos_academicos,
+        'productos_laborales': productos_laborales,
+        'productos_garage': productos_garage,
     }
+    
     return render(request, 'curriculum/perfil_profesional.html', context)
 
 def experiencia_laboral(request):

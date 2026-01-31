@@ -1,106 +1,393 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}{{ page_title }} - Hoja de Vida{% endblock %}
+{% block title %}Perfil Profesional - {{ perfil.nombres }} {{ perfil.apellidos }}{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-primary">
-                <i class="bi bi-person-circle"></i> Perfil Profesional
-            </h1>
-            <hr class="w-50 mx-auto">
+<!-- Hero Section -->
+<section class="perfil-hero">
+    <div class="container">
+        <div class="perfil-foto-container">
+            {% if perfil.foto_perfil %}
+                <img src="{{ perfil.foto_perfil.url }}" alt="{{ perfil.nombres }}" class="perfil-foto">
+            {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" alt="Foto de perfil" class="perfil-foto">
+            {% endif %}
+        </div>
+        
+        <div class="text-center">
+            <h1 class="perfil-nombre">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
+            {% if perfil.descripcionperfil %}
+                <p class="perfil-descripcion">{{ perfil.descripcionperfil }}</p>
+            {% endif %}
+            <button class="btn-descargar-cv" data-bs-toggle="modal" data-bs-target="#pdfModal">
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+                Descargar Hoja de Vida
+            </button>
         </div>
     </div>
-</div>
+</section>
 
-{% if perfil %}
-<div class="row">
-    <div class="col-lg-10 mx-auto">
-        <div class="card shadow-lg border-0">
-            <div class="card-header bg-primary text-white">
-                <h3 class="card-title mb-0">
-                    <i class="bi bi-person-vcard"></i> {{ perfil.nombres }} {{ perfil.apellidos }}
+<!-- Información Personal -->
+<div class="container info-personal-section">
+    <div class="row g-4">
+        <!-- Datos Personales -->
+        <div class="col-lg-4 col-md-6">
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="bi bi-person-circle"></i>
+                    Datos Personales
                 </h3>
+                
+                {% if perfil.numerocedula %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-card-text"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Cédula</div>
+                        <div class="info-value">{{ perfil.numerocedula }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.nacionalidad %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-flag"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Nacionalidad</div>
+                        <div class="info-value">{{ perfil.nacionalidad }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.fechanacimiento %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Fecha de Nacimiento</div>
+                        <div class="info-value">{{ perfil.fechanacimiento|date:"d M, Y" }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.lugarnacimiento %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Lugar de Nacimiento</div>
+                        <div class="info-value">{{ perfil.lugarnacimiento }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.sexo %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-gender-ambiguous"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Sexo</div>
+                        <div class="info-value">{{ perfil.get_sexo_display }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.estadocivil %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-heart"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Estado Civil</div>
+                        <div class="info-value">{{ perfil.estadocivil }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.licenciaconducir %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-car-front"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Licencia de Conducir</div>
+                        <div class="info-value">{{ perfil.licenciaconducir }}</div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
-            <div class="card-body p-4">
-                <!-- Foto y Descripción -->
-                <div class="row mb-4">
-                    {% if perfil.foto_perfil %}
-                    <div class="col-md-4 mb-3">
-                        <div class="foto-perfil-container">
-                            <img src="{{ perfil.foto_perfil.url }}" alt="Foto de {{ perfil.nombres }}" class="foto-perfil">
+        </div>
+
+        <!-- Contacto -->
+        <div class="col-lg-4 col-md-6">
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="bi bi-telephone"></i>
+                    Contacto
+                </h3>
+                
+                {% if perfil.telefonoconvencional %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-phone"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Tel. Móvil</div>
+                        <div class="info-value">{{ perfil.telefonoconvencional }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.telefonofijo %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Tel. Fijo</div>
+                        <div class="info-value">{{ perfil.telefonofijo }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.sitioweb %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-globe"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Sitio Web</div>
+                        <div class="info-value">
+                            <a href="{{ perfil.sitioweb }}" target="_blank">{{ perfil.sitioweb }}</a>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <h5 class="text-primary border-bottom pb-2">
-                            <i class="bi bi-card-text"></i> Sobre mí
-                        </h5>
-                        <p class="lead">{{ perfil.descripcionperfil }}</p>
-                    </div>
-                    {% else %}
-                    <div class="col-12">
-                        <h5 class="text-primary border-bottom pb-2">
-                            <i class="bi bi-card-text"></i> Sobre mí
-                        </h5>
-                        <p class="lead">{{ perfil.descripcionperfil }}</p>
-                    </div>
-                    {% endif %}
                 </div>
+                {% endif %}
+            </div>
+        </div>
 
-                <!-- Información Personal y Contacto -->
-                <div class="row">
-                    <div class="col-md-6 mb-3 info-section">
-                        <h5 class="text-primary border-bottom pb-2">
-                            <i class="bi bi-info-circle"></i> Información Personal
-                        </h5>
-                        <ul class="list-unstyled">
-                            <li><strong>Cédula:</strong> {{ perfil.numerocedula }}</li>
-                            <li><strong>Sexo:</strong> {{ perfil.get_sexo_display }}</li>
-                            <li><strong>Fecha de Nacimiento:</strong> {{ perfil.fechanacimiento|date:"d/m/Y" }}</li>
-                            <li><strong>Lugar de Nacimiento:</strong> {{ perfil.lugarnacimiento }}</li>
-                            <li><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</li>
-                            <li><strong>Estado Civil:</strong> {{ perfil.estadocivil }}</li>
-                            {% if perfil.licenciaconducir %}
-                            <li><strong>Licencia de Conducir:</strong> {{ perfil.licenciaconducir }}</li>
-                            {% endif %}
-                        </ul>
+        <!-- Ubicación -->
+        <div class="col-lg-4 col-md-6">
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="bi bi-geo-alt"></i>
+                    Ubicación
+                </h3>
+                
+                {% if perfil.direcciondomiciliaria %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-house-door"></i>
                     </div>
-
-                    <div class="col-md-6 mb-3 info-section">
-                        <h5 class="text-primary border-bottom pb-2">
-                            <i class="bi bi-telephone"></i> Información de Contacto
-                        </h5>
-                        <ul class="list-unstyled">
-                            {% if perfil.telefonoconvencional %}
-                            <li><strong>Teléfono Convencional:</strong> {{ perfil.telefonoconvencional }}</li>
-                            {% endif %}
-                            {% if perfil.telefonofijo %}
-                            <li><strong>Teléfono Fijo:</strong> {{ perfil.telefonofijo }}</li>
-                            {% endif %}
-                            {% if perfil.direcciondomiciliaria %}
-                            <li><strong>Dirección Domiciliaria:</strong> {{ perfil.direcciondomiciliaria }}</li>
-                            {% endif %}
-                            {% if perfil.direcciontrabajo %}
-                            <li><strong>Dirección de Trabajo:</strong> {{ perfil.direcciontrabajo }}</li>
-                            {% endif %}
-                            {% if perfil.sitioweb %}
-                            <li>
-                                <strong>Sitio Web:</strong> 
-                                <a href="{{ perfil.sitioweb }}" target="_blank">{{ perfil.sitioweb }}</a>
-                            </li>
-                            {% endif %}
-                        </ul>
+                    <div class="info-content">
+                        <div class="info-label">Dirección Domiciliaria</div>
+                        <div class="info-value">{{ perfil.direcciondomiciliaria }}</div>
                     </div>
                 </div>
+                {% endif %}
+                
+                {% if perfil.direcciontrabajo %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Dirección de Trabajo</div>
+                        <div class="info-value">{{ perfil.direcciontrabajo }}</div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-{% else %}
-<div class="alert alert-warning text-center">
-    <i class="bi bi-exclamation-triangle"></i>
-    <strong>No hay perfil activo configurado.</strong> Por favor, configure un perfil en el panel de administración.
+
+<!-- Experiencia Laboral Preview -->
+{% if config.mostrar_experiencia and experiencias %}
+<div class="container preview-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="bi bi-briefcase-fill"></i>
+            Experiencia Laboral
+        </h2>
+        <a href="{% url 'curriculum:experiencia_laboral' %}" class="btn-ver-mas">
+            Ver más <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    {% for exp in experiencias|slice:":3" %}
+    <div class="preview-card">
+        <h4 class="preview-card-title">{{ exp.cargodesempenado }}</h4>
+        <div class="preview-card-subtitle">
+            <i class="bi bi-building"></i>
+            {{ exp.nombreempresa }}
+        </div>
+        <div class="preview-card-date">
+            {{ exp.fechainiciogestion|date:"M Y" }} - 
+            {% if exp.fechafingestion %}{{ exp.fechafingestion|date:"M Y" }}{% else %}Actualidad{% endif %}
+        </div>
+        {% if exp.descripcionfunciones %}
+        <p class="preview-card-description mt-2">{{ exp.descripcionfunciones|truncatewords:30 }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
 </div>
 {% endif %}
+
+<!-- Cursos Preview -->
+{% if config.mostrar_cursos and cursos %}
+<div class="container preview-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="bi bi-book-fill"></i>
+            Cursos y Certificaciones
+        </h2>
+        <a href="{% url 'curriculum:cursos_realizados' %}" class="btn-ver-mas">
+            Ver más <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    {% for curso in cursos|slice:":3" %}
+    <div class="preview-card">
+        <h4 class="preview-card-title">{{ curso.nombrecurso }}</h4>
+        <div class="preview-card-subtitle">
+            <i class="bi bi-mortarboard"></i>
+            {{ curso.entidadpatrocinadora }}
+        </div>
+        <div class="preview-card-date">
+            {{ curso.fechainicio|date:"M Y" }} - {{ curso.fechafin|date:"M Y" }}
+        </div>
+        {% if curso.totalhoras %}
+        <div class="preview-card-date">
+            <i class="bi bi-clock"></i> {{ curso.totalhoras }} horas
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Reconocimientos Preview -->
+{% if config.mostrar_reconocimientos and reconocimientos %}
+<div class="container preview-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="bi bi-trophy-fill"></i>
+            Reconocimientos y Logros
+        </h2>
+        <a href="{% url 'curriculum:reconocimientos' %}" class="btn-ver-mas">
+            Ver más <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    {% for rec in reconocimientos|slice:":3" %}
+    <div class="preview-card">
+        <h4 class="preview-card-title">{{ rec.descripcionreconocimiento|truncatewords:10 }}</h4>
+        <div class="preview-card-subtitle">
+            <i class="bi bi-award"></i>
+            {{ rec.tiporeconocimiento }} - {{ rec.entidadpatrocinadora }}
+        </div>
+        {% if rec.fechareconocimiento %}
+        <div class="preview-card-date">{{ rec.fechareconocimiento|date:"M Y" }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Productos Académicos Preview -->
+{% if config.mostrar_productos_academicos and productos_academicos %}
+<div class="container preview-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="bi bi-journal-text"></i>
+            Productos Académicos
+        </h2>
+        <a href="{% url 'curriculum:productos_academicos' %}" class="btn-ver-mas">
+            Ver más <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    {% for prod in productos_academicos|slice:":3" %}
+    <div class="preview-card">
+        <h4 class="preview-card-title">{{ prod.nombrerecurso }}</h4>
+        <div class="preview-card-subtitle">
+            <i class="bi bi-tag"></i>
+            {{ prod.clasificador }}
+        </div>
+        {% if prod.descripcion %}
+        <p class="preview-card-description">{{ prod.descripcion|truncatewords:25 }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Productos Laborales Preview -->
+{% if config.mostrar_productos_laborales and productos_laborales %}
+<div class="container preview-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="bi bi-folder-fill"></i>
+            Proyectos Laborales
+        </h2>
+        <a href="{% url 'curriculum:productos_laborales' %}" class="btn-ver-mas">
+            Ver más <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    {% for prod in productos_laborales|slice:":3" %}
+    <div class="preview-card">
+        <h4 class="preview-card-title">{{ prod.nombreproducto }}</h4>
+        {% if prod.fechaproducto %}
+        <div class="preview-card-date">{{ prod.fechaproducto|date:"M Y" }}</div>
+        {% endif %}
+        {% if prod.descripcion %}
+        <p class="preview-card-description">{{ prod.descripcion|truncatewords:25 }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Venta Garage Preview -->
+{% if config.mostrar_venta_garage and productos_garage %}
+<div class="container preview-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="bi bi-cart-fill"></i>
+            Venta Garage
+        </h2>
+        <a href="{% url 'curriculum:venta_garage' %}" class="btn-ver-mas">
+            Ir al Garage <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    
+    <div class="garage-grid">
+        {% for prod in productos_garage|slice:":4" %}
+        <div class="garage-item">
+            {% if prod.imagen_producto %}
+                <img src="{{ prod.imagen_producto.url }}" alt="{{ prod.nombreproducto }}">
+            {% else %}
+                <img src="{% static 'images/no-image.png' %}" alt="Sin imagen">
+            {% endif %}
+            <div class="garage-item-info">
+                <div class="garage-item-name">{{ prod.nombreproducto }}</div>
+                {% if prod.valordelbien %}
+                <div class="garage-item-price">${{ prod.valordelbien }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}
