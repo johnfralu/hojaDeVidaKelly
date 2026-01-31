@@ -1,0 +1,374 @@
+img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Evita que palabras muy largas rompan el diseño */
+p, h1, h2, h3, h4, h5, h6, span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Estilos Generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.8; /* Aumentar interlineado */
+}
+
+main {
+    flex: 1;
+}
+
+/* Aumentar espaciado entre elementos */
+p, li, div {
+    line-height: 1.8;
+}
+
+.card-body p {
+    margin-bottom: 1rem;
+}
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem !important;
+}
+
+/* Forzar una sola línea en el Navbar */
+.navbar-nav .nav-link {
+    /*white-space: nowrap;      Evita que el texto salte de línea (lo desactivé)*/
+    padding-left: 0.8rem !important;
+    padding-right: 0.8rem !important;
+    font-size: 0.95rem;       /* Ajuste ligero de tamaño para que quepan todos */
+}
+
+.navbar .container-fluid {
+    flex-wrap: nowrap; /* Mantiene el logo y el botón de hamburguesa en la misma línea */
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    font-weight: 700;
+    border-bottom: 2px solid white;
+}
+
+/* Cards */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem; /* Más espacio entre cards */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,.15) !important;
+}
+
+.card-header {
+    border-bottom: none;
+    padding: 1.25rem;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Foto de perfil */
+.foto-perfil-container {
+    width: 100%;
+    max-width: 200px; /* Reducido a la mitad */
+    margin: 0 auto;   /* Centra el contenedor si el espacio sobra */
+}
+
+.foto-perfil {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 15px; /* Bordes un poco más suaves */
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+/* Bordes de Venta Garage según estado */
+.card-garage-bueno {
+    border: 3px solid #28a745 !important;
+}
+
+.card-garage-regular {
+    border: 3px solid #ffc107 !important;
+}
+
+.imagen-garage {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.display-4 {
+    font-weight: 700;
+}
+
+/* Badges */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Botones */
+.btn {
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 0.25rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,.2);
+}
+
+/* Modal personalizado */
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.form-check {
+    padding: 0.75rem 0;
+}
+
+.form-check-label {
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    box-shadow: 0 -2px 4px rgba(0,0,0,.1);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .card-header h4 {
+        font-size: 1.2rem;
+    }
+    
+    .foto-perfil-container {
+        margin-bottom: 2rem;
+    }
+    
+    /* Ajustamos el contenedor de botones, no el botón individual */
+    .floating-buttons-container {
+        right: 15px;
+        bottom: 15px;
+        gap: 10px;
+    }
+
+    .btn-float {
+        width: 48px;
+        height: 48px;
+    }
+
+    .btn-float i {
+        font-size: 1.4rem !important;
+    }
+
+    /* Ajuste de márgenes laterales para que el contenido no toque los bordes */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Reducimos padding en cards para ganar espacio */
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Colores personalizados */
+.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.bg-success {
+    background-color: #198754 !important;
+}
+
+.bg-info {
+    background-color: #0dcaf0 !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+/* Iconos */
+.bi {
+    margin-right: 5px;
+}
+
+/* Secciones de información */
+.info-section {
+    margin-bottom: 2rem;
+}
+
+.info-section h5 {
+    margin-bottom: 1.5rem;
+}
+
+.info-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info-section li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-section li:last-child {
+    border-bottom: none;
+}
+
+/* Contenedor principal */
+.floating-buttons-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column-reverse; /* El último en el HTML será el de abajo */
+    gap: 15px;
+    z-index: 1050;
+    align-items: center;
+}
+
+/* Estilo base de los botones circulares */
+.btn-float {
+    width: 60px;  /* Un poquito más grandes para que luzca el icono */
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;    /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Forzar que los iconos sean blancos, grandes y centrados */
+.btn-float i {
+    color: #ffffff !important; /* Blanco puro */
+    font-size: 1.8rem !important; /* Más grandes */
+    margin: 0 !important;      /* Quitar márgenes heredados que descentran */
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+/* Colores solicitados */
+.btn-pdf { background-color: #dc3545; }    /* Rojo */
+.btn-admin { background-color: #6c757d; }  /* Gris */
+.btn-config { background-color: #0d6efd; } /* Azul */
+
+/* Ajuste para que los checks del modal no se vean amontonados */
+.modal-body .form-check {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.imagen-garage {
+    transition: opacity 0.3s ease;
+}
+
+.imagen-garage:hover {
+    opacity: 0.8; /* Se aclara un poco al pasar el mouse */
+}
+
+/* Asegura que el modal no tenga fondos extraños y resalte el borde azul */
+#imageModal .modal-content {
+    background-color: transparent;
+    box-shadow: 0 0 20px rgba(13, 110, 253, 0.5); /* Brillo azul suave */
+}

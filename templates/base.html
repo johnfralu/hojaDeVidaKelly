@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hoja de Vida{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Header del Sidebar -->
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <i class="bi bi-person-badge"></i>
+                <span class="sidebar-text">Mi Hoja de Vida</span>
+            </div>
+            <button class="btn-pin" id="btnPin" title="Fijar menú">
+                <i class="bi bi-pin-angle"></i>
+            </button>
+        </div>
+
+        <!-- Menú de Navegación -->
+        <ul class="sidebar-nav">
+            {% if config.mostrar_perfil %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'perfil_profesional' %}active{% endif %}" 
+                   href="{% url 'curriculum:perfil_profesional' %}">
+                    <i class="bi bi-person"></i>
+                    <span class="sidebar-text">Perfil Profesional</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_experiencia %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'experiencia_laboral' %}active{% endif %}" 
+                   href="{% url 'curriculum:experiencia_laboral' %}">
+                    <i class="bi bi-briefcase"></i>
+                    <span class="sidebar-text">Experiencia Laboral</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_reconocimientos %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'reconocimientos' %}active{% endif %}" 
+                   href="{% url 'curriculum:reconocimientos' %}">
+                    <i class="bi bi-trophy"></i>
+                    <span class="sidebar-text">Reconocimientos</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_cursos %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'cursos_realizados' %}active{% endif %}" 
+                   href="{% url 'curriculum:cursos_realizados' %}">
+                    <i class="bi bi-book"></i>
+                    <span class="sidebar-text">Cursos Realizados</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_productos_academicos %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'productos_academicos' %}active{% endif %}" 
+                   href="{% url 'curriculum:productos_academicos' %}">
+                    <i class="bi bi-journal-text"></i>
+                    <span class="sidebar-text">Productos Académicos</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_productos_laborales %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'productos_laborales' %}active{% endif %}" 
+                   href="{% url 'curriculum:productos_laborales' %}">
+                    <i class="bi bi-folder"></i>
+                    <span class="sidebar-text">Productos Laborales</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_venta_garage %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'venta_garage' %}active{% endif %}" 
+                   href="{% url 'curriculum:venta_garage' %}">
+                    <i class="bi bi-cart"></i>
+                    <span class="sidebar-text">Venta Garage</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Overlay para móviles -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Botón hamburguesa para móviles -->
+    <button class="btn-mobile-menu" id="btnMobileMenu">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Contenido Principal -->
+    <main class="main-content" id="mainContent">
+        <div class="container-fluid py-4">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <p class="mb-0">© {% now "Y" %} - Hoja de Vida Automatizada</p>
+            {% if perfil %}
+            <p class="mb-0">{{ perfil.nombres }} {{ perfil.apellidos }}</p>
+            {% endif %}
+        </div>
+    </footer>
+
+    <!-- Botones de Configuración Flotante -->
+    <div class="floating-buttons-container">
+        <a href="/admin/" target="_blank" class="btn-float btn-admin" title="Administración">
+            <i class="bi bi-gear-fill"></i>
+        </a>
+
+        <button class="btn-float btn-config" data-bs-toggle="modal" data-bs-target="#configModal" title="Configuración de Secciones">
+            <i class="bi bi-sliders"></i>
+        </button>
+
+        <button class="btn-float btn-pdf" data-bs-toggle="modal" data-bs-target="#pdfModal" title="Generar PDF">
+            <i class="bi bi-file-earmark-pdf"></i>
+        </button>
+    </div>
+
+    <!-- Modal de Configuración -->
+    <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="configModalLabel">
+                        <i class="bi bi-sliders"></i> Configuración de Secciones
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ps-5">
+                    <p class="text-muted" style="margin-left: -1rem;">Selecciona qué secciones deseas mostrar en el menú:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkPerfil" {% if config.mostrar_perfil %}checked{% endif %}>
+                        <label class="form-check-label" for="checkPerfil">
+                            <i class="bi bi-person"></i> Perfil Profesional
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkExperiencia" {% if config.mostrar_experiencia %}checked{% endif %}>
+                        <label class="form-check-label" for="checkExperiencia">
+                            <i class="bi bi-briefcase"></i> Experiencia Laboral
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkReconocimientos" {% if config.mostrar_reconocimientos %}checked{% endif %}>
+                        <label class="form-check-label" for="checkReconocimientos">
+                            <i class="bi bi-trophy"></i> Reconocimientos
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkCursos" {% if config.mostrar_cursos %}checked{% endif %}>
+                        <label class="form-check-label" for="checkCursos">
+                            <i class="bi bi-book"></i> Cursos Realizados
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkProductosAcademicos" {% if config.mostrar_productos_academicos %}checked{% endif %}>
+                        <label class="form-check-label" for="checkProductosAcademicos">
+                            <i class="bi bi-journal-text"></i> Productos Académicos
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkProductosLaborales" {% if config.mostrar_productos_laborales %}checked{% endif %}>
+                        <label class="form-check-label" for="checkProductosLaborales">
+                            <i class="bi bi-folder"></i> Productos Laborales
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkVentaGarage" {% if config.mostrar_venta_garage %}checked{% endif %}>
+                        <label class="form-check-label" for="checkVentaGarage">
+                            <i class="bi bi-cart"></i> Venta Garage
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarConfig">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Generar PDF -->
+    <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">
+                        <i class="bi bi-file-pdf"></i> Seleccionar Secciones para PDF
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ps-5">
+                    <p class="text-muted" style="margin-left: -1rem;">Selecciona las secciones que deseas incluir en el PDF:</p>
+                    <div class="form-check">
+                        <input class="form-check-input pdf-section" type="checkbox" id="pdfPerfil" checked>
+                        <label class="form-check-label" for="pdfPerfil">
+                            <i class="bi bi-person"></i> Perfil Profesional
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input pdf-section" type="checkbox" id="pdfExperiencia" checked>
+                        <label class="form-check-label" for="pdfExperiencia">
+                            <i class="bi bi-briefcase"></i> Experiencia Laboral
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input pdf-section" type="checkbox" id="pdfReconocimientos" checked>
+                        <label class="form-check-label" for="pdfReconocimientos">
+                            <i class="bi bi-trophy"></i> Reconocimientos
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input pdf-section" type="checkbox" id="pdfCursos" checked>
+                        <label class="form-check-label" for="pdfCursos">
+                            <i class="bi bi-book"></i> Cursos Realizados
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input pdf-section" type="checkbox" id="pdfProductosAcademicos" checked>
+                        <label class="form-check-label" for="pdfProductosAcademicos">
+                            <i class="bi bi-journal-text"></i> Productos Académicos
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input pdf-section" type="checkbox" id="pdfProductosLaborales" checked>
+                        <label class="form-check-label" for="pdfProductosLaborales">
+                            <i class="bi bi-folder"></i> Productos Laborales
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input pdf-section" type="checkbox" id="pdfVentaGarage" checked>
+                        <label class="form-check-label" for="pdfVentaGarage">
+                            <i class="bi bi-cart"></i> Venta Garage
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGenerarPDF" disabled>Generar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border border-primary border-3">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 text-center">
+                    <img src="" id="modalImage" class="img-fluid rounded-bottom" alt="Imagen ampliada">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts personalizados -->
+    <script>
+        // Función para obtener el token CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Guardar configuración de secciones
+        document.getElementById('btnGuardarConfig').addEventListener('click', function() {
+            const csrftoken = getCookie('csrftoken');
+            
+            const config = {
+                mostrar_perfil: document.getElementById('checkPerfil').checked,
+                mostrar_experiencia: document.getElementById('checkExperiencia').checked,
+                mostrar_reconocimientos: document.getElementById('checkReconocimientos').checked,
+                mostrar_cursos: document.getElementById('checkCursos').checked,
+                mostrar_productos_academicos: document.getElementById('checkProductosAcademicos').checked,
+                mostrar_productos_laborales: document.getElementById('checkProductosLaborales').checked,
+                mostrar_venta_garage: document.getElementById('checkVentaGarage').checked
+            };
+
+            fetch("{% url 'curriculum:actualizar_configuracion' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify(config)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error al guardar la configuración');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar la configuración');
+            });
+        });
+
+        // Control del botón Generar PDF
+        const pdfSections = document.querySelectorAll('.pdf-section');
+        const btnGenerarPDF = document.getElementById('btnGenerarPDF');
+
+        function updatePDFButton() {
+            const anyChecked = Array.from(pdfSections).some(checkbox => checkbox.checked);
+            btnGenerarPDF.disabled = !anyChecked;
+        }
+
+        pdfSections.forEach(checkbox => {
+            checkbox.addEventListener('change', updatePDFButton);
+        });
+
+        // Ejecutar al cargar la página
+        updatePDFButton();
+
+        // Generar PDF
+        btnGenerarPDF.addEventListener('click', function() {
+            const selectedSections = [];
+            
+            if (document.getElementById('pdfPerfil').checked) selectedSections.push('perfil');
+            if (document.getElementById('pdfExperiencia').checked) selectedSections.push('experiencia');
+            if (document.getElementById('pdfReconocimientos').checked) selectedSections.push('reconocimientos');
+            if (document.getElementById('pdfCursos').checked) selectedSections.push('cursos');
+            if (document.getElementById('pdfProductosAcademicos').checked) selectedSections.push('productosacademicos');
+            if (document.getElementById('pdfProductosLaborales').checked) selectedSections.push('productoslaborales');
+            if (document.getElementById('pdfVentaGarage').checked) selectedSections.push('ventagarage');
+
+            if (selectedSections.length === 0) {
+                alert('Por favor, selecciona al menos una sección');
+                return;
+            }
+
+            const csrftoken = getCookie('csrftoken');
+            
+            // Mostrar mensaje de carga
+            btnGenerarPDF.disabled = true;
+            btnGenerarPDF.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generando...';
+
+            fetch("{% url 'curriculum:generar_pdf' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ secciones: selectedSections })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Error al generar PDF');
+                return response.blob();
+            })
+            .then(blob => {
+                // Crear URL del blob
+                const url = window.URL.createObjectURL(blob);
+                
+                // Abrir en nueva pestaña
+                const nuevaPestana = window.open(url, '_blank');
+
+                // Si el navegador bloqueó el pop-up, avisamos al usuario
+                if (!nuevaPestana) {
+                    alert('Por favor, permite las ventanas emergentes para ver el PDF');
+                }
+                
+                // Limpiar la URL después de un momento
+                setTimeout(() => window.URL.revokeObjectURL(url), 100);
+                
+                // Cerrar modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('pdfModal'));
+                modal.hide();
+                
+                // Restaurar botón
+                btnGenerarPDF.disabled = false;
+                btnGenerarPDF.innerHTML = 'Generar';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al generar el PDF. Por favor, intenta de nuevo.');
+                btnGenerarPDF.disabled = false;
+                btnGenerarPDF.innerHTML = 'Generar';
+            });
+        });
+
+        function ampliarImagen(src) {
+            // Insertamos la ruta de la imagen en el modal
+            document.getElementById('modalImage').src = src;
+            // Mostramos el modal
+            const miModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            miModal.show();
+        }
+
+        // ==========================================
+        // FUNCIONALIDAD DEL SIDEBAR
+        // ==========================================
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const btnPin = document.getElementById('btnPin');
+        const btnMobileMenu = document.getElementById('btnMobileMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        let isPinned = localStorage.getItem('sidebarPinned') === 'true';
+        let hoverTimeout;
+
+        // Aplicar estado inicial del pin
+        if (isPinned) {
+            sidebar.classList.add('pinned');
+            btnPin.classList.add('pinned');
+        }
+
+        // Hover para expandir (solo si no está fijado)
+        sidebar.addEventListener('mouseenter', function() {
+            if (!isPinned && window.innerWidth > 768) {
+                clearTimeout(hoverTimeout);
+                sidebar.classList.add('expanded');
+            }
+        });
+
+        sidebar.addEventListener('mouseleave', function() {
+            if (!isPinned && window.innerWidth > 768) {
+                hoverTimeout = setTimeout(() => {
+                    sidebar.classList.remove('expanded');
+                }, 300);
+            }
+        });
+
+        // Botón de fijar/desfijar
+        btnPin.addEventListener('click', function(e) {
+            e.stopPropagation();
+            isPinned = !isPinned;
+            
+            if (isPinned) {
+                sidebar.classList.add('pinned');
+                btnPin.classList.add('pinned');
+                btnPin.title = 'Desfijar menú';
+            } else {
+                sidebar.classList.remove('pinned');
+                btnPin.classList.remove('pinned');
+                btnPin.title = 'Fijar menú';
+                sidebar.classList.remove('expanded');
+            }
+            
+            localStorage.setItem('sidebarPinned', isPinned);
+        });
+
+        // Menú móvil
+        btnMobileMenu.addEventListener('click', function() {
+            sidebar.classList.toggle('mobile-open');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+        });
+
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Cerrar menú móvil al hacer clic en un enlace
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('mobile-open');
+                    sidebarOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Ajustar en cambio de tamaño de ventana
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

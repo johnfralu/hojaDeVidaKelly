@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - Hoja de Vida{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary">
+                <i class="bi bi-person-circle"></i> Perfil Profesional
+            </h1>
+            <hr class="w-50 mx-auto">
+        </div>
+    </div>
+</div>
+
+{% if perfil %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-person-vcard"></i> {{ perfil.nombres }} {{ perfil.apellidos }}
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <!-- Foto y Descripción -->
+                <div class="row mb-4">
+                    {% if perfil.foto_perfil %}
+                    <div class="col-md-4 mb-3">
+                        <div class="foto-perfil-container">
+                            <img src="{{ perfil.foto_perfil.url }}" alt="Foto de {{ perfil.nombres }}" class="foto-perfil">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="text-primary border-bottom pb-2">
+                            <i class="bi bi-card-text"></i> Sobre mí
+                        </h5>
+                        <p class="lead">{{ perfil.descripcionperfil }}</p>
+                    </div>
+                    {% else %}
+                    <div class="col-12">
+                        <h5 class="text-primary border-bottom pb-2">
+                            <i class="bi bi-card-text"></i> Sobre mí
+                        </h5>
+                        <p class="lead">{{ perfil.descripcionperfil }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Información Personal y Contacto -->
+                <div class="row">
+                    <div class="col-md-6 mb-3 info-section">
+                        <h5 class="text-primary border-bottom pb-2">
+                            <i class="bi bi-info-circle"></i> Información Personal
+                        </h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Cédula:</strong> {{ perfil.numerocedula }}</li>
+                            <li><strong>Sexo:</strong> {{ perfil.get_sexo_display }}</li>
+                            <li><strong>Fecha de Nacimiento:</strong> {{ perfil.fechanacimiento|date:"d/m/Y" }}</li>
+                            <li><strong>Lugar de Nacimiento:</strong> {{ perfil.lugarnacimiento }}</li>
+                            <li><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</li>
+                            <li><strong>Estado Civil:</strong> {{ perfil.estadocivil }}</li>
+                            {% if perfil.licenciaconducir %}
+                            <li><strong>Licencia de Conducir:</strong> {{ perfil.licenciaconducir }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6 mb-3 info-section">
+                        <h5 class="text-primary border-bottom pb-2">
+                            <i class="bi bi-telephone"></i> Información de Contacto
+                        </h5>
+                        <ul class="list-unstyled">
+                            {% if perfil.telefonoconvencional %}
+                            <li><strong>Teléfono Convencional:</strong> {{ perfil.telefonoconvencional }}</li>
+                            {% endif %}
+                            {% if perfil.telefonofijo %}
+                            <li><strong>Teléfono Fijo:</strong> {{ perfil.telefonofijo }}</li>
+                            {% endif %}
+                            {% if perfil.direcciondomiciliaria %}
+                            <li><strong>Dirección Domiciliaria:</strong> {{ perfil.direcciondomiciliaria }}</li>
+                            {% endif %}
+                            {% if perfil.direcciontrabajo %}
+                            <li><strong>Dirección de Trabajo:</strong> {{ perfil.direcciontrabajo }}</li>
+                            {% endif %}
+                            {% if perfil.sitioweb %}
+                            <li>
+                                <strong>Sitio Web:</strong> 
+                                <a href="{{ perfil.sitioweb }}" target="_blank">{{ perfil.sitioweb }}</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning text-center">
+    <i class="bi bi-exclamation-triangle"></i>
+    <strong>No hay perfil activo configurado.</strong> Por favor, configure un perfil en el panel de administración.
+</div>
+{% endif %}
+{% endblock %}

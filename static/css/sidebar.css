@@ -1,0 +1,403 @@
+/* ==========================================
+   SIDEBAR STYLES
+   ========================================== */
+
+:root {
+    --sidebar-width-collapsed: 70px;
+    --sidebar-width-expanded: 260px;
+    --sidebar-bg: #2c3e50;
+    --sidebar-hover: #34495e;
+    --sidebar-active: #3498db;
+    --sidebar-text: #ecf0f1;
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ==========================================
+   SIDEBAR BASE
+   ========================================== */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: var(--sidebar-width-collapsed);
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    transition: width var(--transition-speed) ease;
+    z-index: 1000;
+    overflow: hidden;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar:hover,
+.sidebar.expanded,
+.sidebar.pinned {
+    width: var(--sidebar-width-expanded);
+}
+
+/* ==========================================
+   SIDEBAR HEADER
+   ========================================== */
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 70px;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    white-space: nowrap;
+}
+
+.sidebar-brand i {
+    font-size: 1.5rem;
+    color: var(--sidebar-active);
+    min-width: 30px;
+    flex-shrink: 0;
+}
+
+.sidebar-text {
+    opacity: 0;
+    transition: opacity var(--transition-speed) ease;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.sidebar:hover .sidebar-text,
+.sidebar.expanded .sidebar-text,
+.sidebar.pinned .sidebar-text {
+    opacity: 1;
+}
+
+/* Botón de Pin */
+.btn-pin {
+    background: transparent;
+    border: none;
+    color: var(--sidebar-text);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.sidebar:hover .btn-pin,
+.sidebar.expanded .btn-pin,
+.sidebar.pinned .btn-pin {
+    opacity: 1;
+}
+
+.btn-pin:hover {
+    background: var(--sidebar-hover);
+    transform: scale(1.1);
+}
+
+.btn-pin.pinned {
+    color: var(--sidebar-active);
+}
+
+.btn-pin.pinned i {
+    transform: rotate(45deg);
+}
+
+/* ==========================================
+   SIDEBAR NAVIGATION
+   ========================================== */
+
+.sidebar-nav {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+.sidebar-nav .nav-item {
+    margin: 0;
+}
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    gap: 1rem;
+    position: relative;
+}
+
+.sidebar-nav .nav-link i {
+    font-size: 1.3rem;
+    min-width: 30px;
+    flex-shrink: 0;
+}
+
+.sidebar-nav .nav-link .sidebar-text {
+    opacity: 0;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.sidebar:hover .nav-link .sidebar-text,
+.sidebar.expanded .nav-link .sidebar-text,
+.sidebar.pinned .nav-link .sidebar-text {
+    opacity: 1;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: var(--sidebar-hover);
+    padding-left: 1.5rem;
+}
+
+.sidebar-nav .nav-link.active {
+    background: var(--sidebar-active);
+    border-left: 4px solid #2ecc71;
+}
+
+.sidebar-nav .nav-link.active i {
+    color: #fff;
+}
+
+/* ==========================================
+   MAIN CONTENT
+   ========================================== */
+
+.main-content {
+    margin-left: var(--sidebar-width-collapsed);
+    transition: margin-left var(--transition-speed) ease;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.sidebar.pinned ~ .main-content {
+    margin-left: var(--sidebar-width-expanded);
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+
+.footer {
+    margin-left: var(--sidebar-width-collapsed);
+    transition: margin-left var(--transition-speed) ease;
+    background: #343a40;
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.sidebar.pinned ~ .footer {
+    margin-left: var(--sidebar-width-expanded);
+}
+
+/* ==========================================
+   BOTONES FLOTANTES
+   ========================================== */
+
+.floating-buttons-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 999;
+}
+
+.btn-float {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-float:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn-admin {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-config {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.btn-pdf {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* ==========================================
+   RESPONSIVE - MÓVILES
+   ========================================== */
+
+/* Botón hamburguesa */
+.btn-mobile-menu {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: 50px;
+    height: 50px;
+    background: var(--sidebar-bg);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-mobile-menu:hover {
+    background: var(--sidebar-hover);
+    transform: scale(1.05);
+}
+
+/* Overlay para cerrar menú en móvil */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .btn-mobile-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: var(--sidebar-width-expanded);
+        transition: transform var(--transition-speed) ease;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .sidebar .sidebar-text {
+        opacity: 1;
+    }
+
+    .sidebar .btn-pin {
+        opacity: 1;
+    }
+
+    .main-content,
+    .footer {
+        margin-left: 0 !important;
+    }
+
+    .floating-buttons-container {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .btn-float {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-buttons-container {
+        bottom: 15px;
+        right: 15px;
+        gap: 10px;
+    }
+
+    .btn-float {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ==========================================
+   ANIMACIONES
+   ========================================== */
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.sidebar.mobile-open {
+    animation: slideIn var(--transition-speed) ease;
+}
+
+/* ==========================================
+   SCROLLBAR PERSONALIZADO
+   ========================================== */
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
