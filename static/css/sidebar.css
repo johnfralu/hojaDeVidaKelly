@@ -338,27 +338,39 @@ body {
     overflow: hidden;
 }
 
-/* Cuando el menú NO está expandido ni pinned */
+/* 2. Reset total del botón cuando está contraído */
 .sidebar:not(.expanded):not(.pinned) .sidebar-config {
-    padding: 0.7rem 0 !important; /* Forzamos padding lateral cero */
-    width: var(--sidebar-width-collapsed); /* Forzamos que mida exactamente 70px */
+    padding: 10px 0 !important; /* Espaciado arriba/abajo, nada a los lados */
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .sidebar:not(.expanded):not(.pinned) .sidebar-btn-config {
-    width: 40px !important;      /* Lo hacemos más pequeño que los 70px */
+    width: 40px !important;    /* Mucho más pequeño que los 70px de la barra */
+    min-width: 40px !important;
     height: 40px !important;
     padding: 0 !important;
-    border: none !important;     /* Eliminamos el borde punteado que causa el scroll */
+    margin: 0 auto !important;
+    border: none !important;    /* ELIMINA el borde punteado que causa el ancho extra */
     background: transparent !important;
+    outline: none !important;   /* Elimina el resaltado de enfoque de algunos navegadores */
     box-shadow: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* 3. Forzar que el icono esté centrado y el texto sea invisible */
 .sidebar:not(.expanded):not(.pinned) .sidebar-btn-config i {
     margin: 0 !important;
-    font-size: 1.2rem;
-    display: block;              /* Centrado perfecto */
+    padding: 0 !important;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.sidebar:not(.expanded):not(.pinned) .sidebar-btn-config .sidebar-text {
+    display: none !important; /* Asegura que el texto no ocupe espacio invisible */
 }
 
 .sidebar-btn-config i {
@@ -554,4 +566,12 @@ body {
 
 .sidebar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
+}
+
+.sidebar * {
+    max-width: 100%;
+}
+
+.sidebar:not(.expanded):not(.pinned) * {
+    overflow: hidden !important;
 }
