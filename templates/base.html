@@ -24,29 +24,21 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <!-- Header del Sidebar -->
-        <div class="sidebar-header">
-            <div class="sidebar-brand">
-                <i class="bi bi-person-badge"></i>
-                <span class="sidebar-text">Mi Hoja de Vida</span>
-            </div>
-            <button class="btn-pin" id="btnPin" title="Fijar menú">
-                <i class="bi bi-pin-angle"></i>
-            </button>
-        </div>
 
-        <!-- Foto de perfil en sidebar -->
+        <!-- Foto de perfil -->
         <div class="sidebar-perfil">
-            {% if perfil and perfil.foto_perfil %}
-                <img src="{{ perfil.foto_perfil.url }}" alt="{{ perfil.nombres }}" class="sidebar-foto">
-            {% else %}
-                <img src="{% static 'images/default-avatar.png' %}" alt="Foto de perfil" class="sidebar-foto">
-            {% endif %}
-            <span class="sidebar-text sidebar-nombre">
-                {% if perfil %}{{ perfil.nombres|cut:" " }} {{ perfil.apellidos|cut:" " }}{% endif %}
+            <a href="{% url 'curriculum:perfil_profesional' %}" class="sidebar-foto-link">
+                {% if perfil and perfil.foto_perfil %}
+                    <img src="{{ perfil.foto_perfil.url }}" alt="{{ perfil.nombres }}" class="sidebar-foto">
+                {% else %}
+                    <img src="{% static 'images/default-avatar.png' %}" alt="Foto de perfil" class="sidebar-foto">
+                {% endif %}
+            </a>
+            <span class="sidebar-nombre">
+                {% if perfil %}{{ perfil.nombres|truncatewords:1 }}{% endif %}
             </span>
-            <button class="sidebar-btn-pdf sidebar-text" data-bs-toggle="modal" data-bs-target="#pdfModal" title="Generar PDF">
-                <i class="bi bi-file-earmark-pdf"></i> Generar PDF
+            <button class="sidebar-btn-pdf" data-bs-toggle="modal" data-bs-target="#pdfModal">
+                <i class="bi bi-file-earmark-pdf"></i> Descargar CV
             </button>
         </div>
 
@@ -56,8 +48,7 @@
             <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'perfil_profesional' %}active{% endif %}" 
                    href="{% url 'curriculum:perfil_profesional' %}">
-                    <i class="bi bi-person"></i>
-                    <span class="sidebar-text">Perfil Profesional</span>
+                    Perfil
                 </a>
             </li>
             {% endif %}
@@ -66,38 +57,16 @@
             <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'experiencia_laboral' %}active{% endif %}" 
                    href="{% url 'curriculum:experiencia_laboral' %}">
-                    <i class="bi bi-briefcase"></i>
-                    <span class="sidebar-text">Experiencia Laboral</span>
+                    Experiencia
                 </a>
             </li>
             {% endif %}
-            
-            {% if config.mostrar_reconocimientos %}
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'reconocimientos' %}active{% endif %}" 
-                   href="{% url 'curriculum:reconocimientos' %}">
-                    <i class="bi bi-trophy"></i>
-                    <span class="sidebar-text">Reconocimientos</span>
-                </a>
-            </li>
-            {% endif %}
-            
-            {% if config.mostrar_cursos %}
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'cursos_realizados' %}active{% endif %}" 
-                   href="{% url 'curriculum:cursos_realizados' %}">
-                    <i class="bi bi-book"></i>
-                    <span class="sidebar-text">Cursos Realizados</span>
-                </a>
-            </li>
-            {% endif %}
-            
+
             {% if config.mostrar_productos_academicos %}
             <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'productos_academicos' %}active{% endif %}" 
                    href="{% url 'curriculum:productos_academicos' %}">
-                    <i class="bi bi-journal-text"></i>
-                    <span class="sidebar-text">Productos Académicos</span>
+                    Prod. Académicos
                 </a>
             </li>
             {% endif %}
@@ -106,8 +75,25 @@
             <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'productos_laborales' %}active{% endif %}" 
                    href="{% url 'curriculum:productos_laborales' %}">
-                    <i class="bi bi-folder"></i>
-                    <span class="sidebar-text">Productos Laborales</span>
+                    Proyectos
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_cursos %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'cursos_realizados' %}active{% endif %}" 
+                   href="{% url 'curriculum:cursos_realizados' %}">
+                    Cursos y Títulos
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if config.mostrar_reconocimientos %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'reconocimientos' %}active{% endif %}" 
+                   href="{% url 'curriculum:reconocimientos' %}">
+                    Logros
                 </a>
             </li>
             {% endif %}
@@ -116,17 +102,16 @@
             <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'venta_garage' %}active{% endif %}" 
                    href="{% url 'curriculum:venta_garage' %}">
-                    <i class="bi bi-cart"></i>
-                    <span class="sidebar-text">Venta Garage</span>
+                    Garage
                 </a>
             </li>
             {% endif %}
         </ul>
 
-        <!-- Botón de Configuración dentro del sidebar -->
+        <!-- Botón Configurar Secciones -->
         <div class="sidebar-config">
-            <button class="sidebar-btn-config sidebar-text" data-bs-toggle="modal" data-bs-target="#configModal">
-                <i class="bi bi-sliders"></i> <span>Configurar Secciones</span>
+            <button class="sidebar-btn-config" data-bs-toggle="modal" data-bs-target="#configModal">
+                <i class="bi bi-sliders"></i> Configurar Secciones
             </button>
         </div>
     </div>
@@ -340,51 +325,8 @@
         // SIDEBAR
         // ==========================================
         const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        const btnPin = document.getElementById('btnPin');
         const btnMobileMenu = document.getElementById('btnMobileMenu');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
-        
-        let isPinned = localStorage.getItem('sidebarPinned') === 'true';
-        let hoverTimeout;
-
-        if (isPinned) {
-            sidebar.classList.add('pinned');
-            btnPin.classList.add('pinned');
-        }
-
-        sidebar.addEventListener('mouseenter', function() {
-            if (!isPinned && window.innerWidth > 768) {
-                clearTimeout(hoverTimeout);
-                sidebar.classList.add('expanded');
-            }
-        });
-
-        sidebar.addEventListener('mouseleave', function() {
-            if (!isPinned && window.innerWidth > 768) {
-                hoverTimeout = setTimeout(() => {
-                    sidebar.classList.remove('expanded');
-                }, 300);
-            }
-        });
-
-        btnPin.addEventListener('click', function(e) {
-            e.stopPropagation();
-            isPinned = !isPinned;
-            
-            if (isPinned) {
-                sidebar.classList.add('pinned');
-                btnPin.classList.add('pinned');
-                btnPin.title = 'Desfijar menú';
-            } else {
-                sidebar.classList.remove('pinned');
-                btnPin.classList.remove('pinned');
-                btnPin.title = 'Fijar menú';
-                sidebar.classList.remove('expanded');
-            }
-            
-            localStorage.setItem('sidebarPinned', isPinned);
-        });
 
         // Menú móvil
         btnMobileMenu.addEventListener('click', function() {
