@@ -306,6 +306,7 @@ footer {
 
 .main-content {
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: transparent !important;
 }
 
 .card {
@@ -1132,4 +1133,13 @@ footer {
 .pdf-switches .form-check-input:focus {
     border-color: #fb7185;
     box-shadow: 0 0 0 0.25rem rgba(251, 113, 133, 0.25);
+}
+
+#vanta-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
 }

@@ -416,7 +416,7 @@ body {
    ========================================== */
 
 .main-content {
-    background-color: #f7fafc; /* Blanco hueso pastel */
+    background-color: transparent !important;
     margin-left: var(--sidebar-width-collapsed);
     transition: margin-left var(--transition-speed) ease;
     min-height: 100vh;
