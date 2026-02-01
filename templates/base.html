@@ -179,62 +179,50 @@
 
     <!-- Modal de Configuración -->
     <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="configModalLabel">
-                        <i class="bi bi-sliders"></i> Configuración de Secciones
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal-pastel border-0 shadow-lg">
+                <div class="modal-header modal-header-config text-white border-0">
+                    <h5 class="modal-title fw-bold" id="configModalLabel">
+                        <i class="bi bi-sliders2-vertical me-2"></i> Ajustes de Visualización
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body ps-5">
-                    <p class="text-muted" style="margin-left: -1rem;">Selecciona qué secciones deseas mostrar en el menú:</p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="checkPerfil" {% if config.mostrar_perfil %}checked{% endif %}>
-                        <label class="form-check-label" for="checkPerfil">
-                            <i class="bi bi-person"></i> Perfil Profesional
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="checkExperiencia" {% if config.mostrar_experiencia %}checked{% endif %}>
-                        <label class="form-check-label" for="checkExperiencia">
-                            <i class="bi bi-briefcase"></i> Experiencia Laboral
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="checkReconocimientos" {% if config.mostrar_reconocimientos %}checked{% endif %}>
-                        <label class="form-check-label" for="checkReconocimientos">
-                            <i class="bi bi-trophy"></i> Reconocimientos
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="checkCursos" {% if config.mostrar_cursos %}checked{% endif %}>
-                        <label class="form-check-label" for="checkCursos">
-                            <i class="bi bi-book"></i> Cursos Realizados
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="checkProductosAcademicos" {% if config.mostrar_productos_academicos %}checked{% endif %}>
-                        <label class="form-check-label" for="checkProductosAcademicos">
-                            <i class="bi bi-journal-text"></i> Productos Académicos
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="checkProductosLaborales" {% if config.mostrar_productos_laborales %}checked{% endif %}>
-                        <label class="form-check-label" for="checkProductosLaborales">
-                            <i class="bi bi-folder"></i> Productos Laborales
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="checkVentaGarage" {% if config.mostrar_venta_garage %}checked{% endif %}>
-                        <label class="form-check-label" for="checkVentaGarage">
-                            <i class="bi bi-cart"></i> Venta Garage
-                        </label>
+                <div class="modal-body p-4">
+                    <p class="text-muted mb-4 small"><i class="bi bi-info-circle"></i> Marca las secciones que deseas que aparezcan en tu menú de navegación principal.</p>
+                    <div class="custom-checks-container">
+                        <div class="form-check custom-check-item">
+                            <input class="form-check-input" type="checkbox" id="checkPerfil" {% if config.mostrar_perfil %}checked{% endif %}>
+                            <label class="form-check-label" for="checkPerfil"><i class="bi bi-person me-2"></i>Perfil Profesional</label>
+                        </div>
+                        <div class="form-check custom-check-item">
+                            <input class="form-check-input" type="checkbox" id="checkExperiencia" {% if config.mostrar_experiencia %}checked{% endif %}>
+                            <label class="form-check-label" for="checkExperiencia"><i class="bi bi-briefcase me-2"></i>Experiencia Laboral</label>
+                        </div>
+                        <div class="form-check custom-check-item">
+                            <input class="form-check-input" type="checkbox" id="checkReconocimientos" {% if config.mostrar_reconocimientos %}checked{% endif %}>
+                            <label class="form-check-label" for="checkReconocimientos"><i class="bi bi-trophy me-2"></i>Reconocimientos</label>
+                        </div>
+                        <div class="form-check custom-check-item">
+                            <input class="form-check-input" type="checkbox" id="checkCursos" {% if config.mostrar_cursos %}checked{% endif %}>
+                            <label class="form-check-label" for="checkCursos"><i class="bi bi-book me-2"></i>Cursos Realizados</label>
+                        </div>
+                        <div class="form-check custom-check-item">
+                            <input class="form-check-input" type="checkbox" id="checkProductosAcademicos" {% if config.mostrar_productos_academicos %}checked{% endif %}>
+                            <label class="form-check-label" for="checkProductosAcademicos"><i class="bi bi-journal-text me-2"></i>Productos Académicos</label>
+                        </div>
+                        <div class="form-check custom-check-item">
+                            <input class="form-check-input" type="checkbox" id="checkProductosLaborales" {% if config.mostrar_productos_laborales %}checked{% endif %}>
+                            <label class="form-check-label" for="checkProductosLaborales"><i class="bi bi-folder me-2"></i>Productos Laborales</label>
+                        </div>
+                        <div class="form-check custom-check-item">
+                            <input class="form-check-input" type="checkbox" id="checkVentaGarage" {% if config.mostrar_venta_garage %}checked{% endif %}>
+                            <label class="form-check-label" for="checkVentaGarage"><i class="bi bi-cart me-2"></i>Venta Garage</label>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarConfig">Guardar Cambios</button>
+                <div class="modal-footer border-0 p-3 bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-light-pastel" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-save-config" id="btnGuardarConfig">Aplicar Cambios</button>
                 </div>
             </div>
         </div>
@@ -242,62 +230,56 @@
 
     <!-- Modal de Generar PDF -->
     <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pdfModalLabel">
-                        <i class="bi bi-file-pdf"></i> Seleccionar Secciones para PDF
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal-pastel border-0 shadow-lg">
+                <div class="modal-header modal-header-pdf text-white border-0">
+                    <h5 class="modal-title fw-bold" id="pdfModalLabel">
+                        <i class="bi bi-file-earmark-pdf-fill me-2"></i> Exportar Hoja de Vida
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body ps-5">
-                    <p class="text-muted" style="margin-left: -1rem;">Selecciona las secciones que deseas incluir en el PDF:</p>
-                    <div class="form-check">
-                        <input class="form-check-input pdf-section" type="checkbox" id="pdfPerfil" checked>
-                        <label class="form-check-label" for="pdfPerfil">
-                            <i class="bi bi-person"></i> Perfil Profesional
-                        </label>
+                <div class="modal-body p-4">
+                    <div class="pdf-selection-box p-3 mb-4 rounded-3 bg-light border border-dashed text-center">
+                        <i class="bi bi-file-pdf display-4 text-danger-pastel mb-2"></i>
+                        <p class="mb-0 fw-bold">Selección de Exportación</p>
+                        <small class="text-muted">Elige los bloques que conformarán tu documento.</small>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input pdf-section" type="checkbox" id="pdfExperiencia" checked>
-                        <label class="form-check-label" for="pdfExperiencia">
-                            <i class="bi bi-briefcase"></i> Experiencia Laboral
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input pdf-section" type="checkbox" id="pdfReconocimientos" checked>
-                        <label class="form-check-label" for="pdfReconocimientos">
-                            <i class="bi bi-trophy"></i> Reconocimientos
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input pdf-section" type="checkbox" id="pdfCursos" checked>
-                        <label class="form-check-label" for="pdfCursos">
-                            <i class="bi bi-book"></i> Cursos Realizados
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input pdf-section" type="checkbox" id="pdfProductosAcademicos" checked>
-                        <label class="form-check-label" for="pdfProductosAcademicos">
-                            <i class="bi bi-journal-text"></i> Productos Académicos
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input pdf-section" type="checkbox" id="pdfProductosLaborales" checked>
-                        <label class="form-check-label" for="pdfProductosLaborales">
-                            <i class="bi bi-folder"></i> Productos Laborales
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input pdf-section" type="checkbox" id="pdfVentaGarage" checked>
-                        <label class="form-check-label" for="pdfVentaGarage">
-                            <i class="bi bi-cart"></i> Venta Garage
-                        </label>
+                    <div class="custom-checks-container">
+                        <div class="form-check custom-check-item-pdf">
+                            <input class="form-check-input pdf-section" type="checkbox" id="pdfPerfil" checked>
+                            <label class="form-check-label" for="pdfPerfil">Incluir Perfil Profesional</label>
+                        </div>
+                        <div class="form-check custom-check-item-pdf">
+                            <input class="form-check-input pdf-section" type="checkbox" id="pdfExperiencia" checked>
+                            <label class="form-check-label" for="pdfExperiencia">Incluir Experiencia Laboral</label>
+                        </div>
+                        <div class="form-check custom-check-item-pdf">
+                            <input class="form-check-input pdf-section" type="checkbox" id="pdfReconocimientos" checked>
+                            <label class="form-check-label" for="pdfReconocimientos">Incluir Reconocimientos</label>
+                        </div>
+                        <div class="form-check custom-check-item-pdf">
+                            <input class="form-check-input pdf-section" type="checkbox" id="pdfCursos" checked>
+                            <label class="form-check-label" for="pdfCursos">Incluir Cursos Realizados</label>
+                        </div>
+                        <div class="form-check custom-check-item-pdf">
+                            <input class="form-check-input pdf-section" type="checkbox" id="pdfProductosAcademicos" checked>
+                            <label class="form-check-label" for="pdfProductosAcademicos">Incluir Productos Académicos</label>
+                        </div>
+                        <div class="form-check custom-check-item-pdf">
+                            <input class="form-check-input pdf-section" type="checkbox" id="pdfProductosLaborales" checked>
+                            <label class="form-check-label" for="pdfProductosLaborales">Incluir Productos Laborales</label>
+                        </div>
+                        <div class="form-check custom-check-item-pdf">
+                            <input class="form-check-input pdf-section" type="checkbox" id="pdfVentaGarage" checked>
+                            <label class="form-check-label" for="pdfVentaGarage">Incluir Venta Garage</label>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnGenerarPDF" disabled>Generar</button>
+                <div class="modal-footer border-0 p-3 bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-light-pastel" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-generate-pdf" id="btnGenerarPDF" disabled>
+                        <i class="bi bi-file-earmark-arrow-down-fill"></i> Generar PDF
+                    </button>
                 </div>
             </div>
         </div>

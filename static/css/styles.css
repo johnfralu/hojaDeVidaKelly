@@ -933,3 +933,87 @@ footer {
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     height: 100%;
 }
+
+/* Estilos Generales para Modales Pastel */
+.custom-modal-pastel {
+    border-radius: 20px !important;
+    overflow: hidden;
+}
+
+/* Modal Configuración (Azul Índigo Pastel) */
+.modal-header-config {
+    background: linear-gradient(135deg, #818cf8, #a78bfa); /* Lavanda-Índigo */
+    padding: 1.5rem;
+}
+
+.btn-save-config {
+    background-color: #818cf8;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-save-config:hover {
+    background-color: #6366f1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Modal PDF (Salmón/Rojo Pastel) */
+.modal-header-pdf {
+    background: linear-gradient(135deg, #fb7185, #fda4af); /* Salmón Pastel */
+    padding: 1.5rem;
+}
+
+.text-danger-pastel {
+    color: #fb7185;
+}
+
+.btn-generate-pdf {
+    background-color: #fb7185;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-generate-pdf:not(:disabled):hover {
+    background-color: #f43f5e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+}
+
+/* Checkboxes Estilizados */
+.custom-check-item, .custom-check-item-pdf {
+    padding: 10px 15px;
+    border-radius: 12px;
+    transition: background 0.2s;
+    margin-bottom: 5px;
+}
+
+.custom-check-item:hover { background-color: #f3e8ff; } /* Lila suave */
+.custom-check-item-pdf:hover { background-color: #fff1f2; } /* Salmón suave */
+
+.form-check-input:checked {
+    background-color: #6366f1; /* Índigo para config */
+    border-color: #6366f1;
+}
+
+.pdf-section.form-check-input:checked {
+    background-color: #f43f5e; /* Salmón para PDF */
+    border-color: #f43f5e;
+}
+
+.btn-light-pastel {
+    background-color: #f8fafc;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+}
