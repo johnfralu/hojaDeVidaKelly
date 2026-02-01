@@ -215,7 +215,7 @@
         <!-- Experiencia Laboral Preview -->
         {% if config.mostrar_experiencia %}
         <div class="col-lg-4 col-md-6">
-            <div class="preview-section-compact">
+            <div class="preview-section-compact border-lavanda">
                 <div class="section-header-compact">
                     <h3 class="section-title-compact">
                         <i class="bi bi-briefcase-fill"></i>
@@ -228,9 +228,11 @@
                 
                 <ul class="preview-list">
                     {% for exp in experiencias|slice:":3" %}
-                    <li class="preview-list-item">
-                        <i class="bi bi-circle-fill"></i>
-                        <span>{{ exp.cargodesempenado }}</span>
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-circle-fill me-2" style="font-size: 0.5rem; color: #818cf8;"></i>{{ exp.cargodesempenado }}</span>
+                        <small class="text-muted ms-2" style="font-size: 0.75rem;">
+                            {{ exp.fechainicio|date:"Y" }} - {% if exp.fechafin %}{{ exp.fechafin|date:"Y" }}{% else %}Pres.{% endif %}
+                        </small>
                     </li>
                     {% empty %}
                     <li class="preview-list-empty">No hay experiencias registradas</li>
@@ -251,7 +253,7 @@
         <!-- Reconocimientos Preview -->
         {% if config.mostrar_reconocimientos %}
         <div class="col-lg-4 col-md-6">
-            <div class="preview-section-compact">
+            <div class="preview-section-compact border-amarillo">
                 <div class="section-header-compact">
                     <h3 class="section-title-compact">
                         <i class="bi bi-trophy-fill"></i>
@@ -290,7 +292,7 @@
         <!-- Cursos Preview -->
         {% if config.mostrar_cursos %}
         <div class="col-lg-4 col-md-6">
-            <div class="preview-section-compact">
+            <div class="preview-section-compact border-menta">
                 <div class="section-header-compact">
                     <h3 class="section-title-compact">
                         <i class="bi bi-book-fill"></i>
@@ -303,9 +305,11 @@
                 
                 <ul class="preview-list">
                     {% for curso in cursos|slice:":3" %}
-                    <li class="preview-list-item">
-                        <i class="bi bi-circle-fill"></i>
-                        <span>{{ curso.nombrecurso }}</span>
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-circle-fill me-2" style="font-size: 0.5rem; color: #10b981;"></i>{{ curso.nombrecurso }}</span>
+                        <span class="badge rounded-pill ms-2" style="background-color: #d1fae5; color: #10b981; font-size: 0.7rem;">
+                            {{ curso.totalhoras }}h
+                        </span>
                     </li>
                     {% empty %}
                     <li class="preview-list-empty">No hay cursos registrados</li>
@@ -326,7 +330,7 @@
         <!-- Productos Académicos Preview -->
         {% if config.mostrar_productos_academicos %}
         <div class="col-lg-4 col-md-6">
-            <div class="preview-section-compact">
+            <div class="preview-section-compact border-cielo">
                 <div class="section-header-compact">
                     <h3 class="section-title-compact">
                         <i class="bi bi-journal-text"></i>
@@ -340,8 +344,12 @@
                 <ul class="preview-list">
                     {% for prod in productos_academicos|slice:":3" %}
                     <li class="preview-list-item">
-                        <i class="bi bi-circle-fill"></i>
-                        <span>{{ prod.nombrerecurso }}</span>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold" style="font-size: 0.9rem;">{{ prod.nombrerecurso }}</span>
+                            <small style="color: #0ea5e9; font-weight: 600; font-size: 0.75rem;">
+                                <i class="bi bi-tag-fill"></i> {{ prod.clasificador }}
+                            </small>
+                        </div>
                     </li>
                     {% empty %}
                     <li class="preview-list-empty">No hay productos académicos registrados</li>
@@ -362,7 +370,7 @@
         <!-- Productos Laborales Preview -->
         {% if config.mostrar_productos_laborales %}
         <div class="col-lg-4 col-md-6">
-            <div class="preview-section-compact">
+            <div class="preview-section-compact border-salmon">
                 <div class="section-header-compact">
                     <h3 class="section-title-compact">
                         <i class="bi bi-folder-fill"></i>
@@ -375,9 +383,11 @@
                 
                 <ul class="preview-list">
                     {% for prod in productos_laborales|slice:":3" %}
-                    <li class="preview-list-item">
-                        <i class="bi bi-circle-fill"></i>
-                        <span>{{ prod.nombreproducto }}</span>
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-circle-fill me-2" style="font-size: 0.5rem; color: #f43f5e;"></i>{{ prod.nombreproducto }}</span>
+                        <small class="text-muted ms-2" style="font-size: 0.75rem;">
+                            <i class="bi bi-calendar3"></i> {{ prod.fechaproducto|date:"m/Y" }}
+                        </small>
                     </li>
                     {% empty %}
                     <li class="preview-list-empty">No hay productos laborales registrados</li>
@@ -398,7 +408,7 @@
         <!-- Venta Garage Preview -->
         {% if config.mostrar_venta_garage %}
         <div class="col-lg-4 col-md-6">
-            <div class="preview-section-compact">
+            <div class="preview-section-compact border-lila">
                 <div class="section-header-compact">
                     <h3 class="section-title-compact">
                         <i class="bi bi-cart-fill"></i>
