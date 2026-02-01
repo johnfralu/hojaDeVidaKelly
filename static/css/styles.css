@@ -12,11 +12,11 @@ p, h1, h2, h3, h4, h5, h6, span {
 /* Estilos Generales */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
+    background-color: transparent; /* CAMBIO: De #f8f9fa a transparente */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    line-height: 1.8; /* Aumentar interlineado */
+    line-height: 1.8;
 }
 
 main {
@@ -72,11 +72,13 @@ p, li, div {
 /* Cards */
 .card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 20px; /* Bordes más redondos */
+    border-radius: 20px;
     overflow: hidden;
     margin-bottom: 2rem;
-    border: none; /* Quitamos bordes rústicos */
-    background-color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Un borde sutil de cristal */
+    background-color: rgba(255, 255, 255, 0.85); /* Blanco con 85% de opacidad */
+    backdrop-filter: blur(10px); /* Esto hace que el fondo se vea borroso detrás de la card */
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .card:hover {
@@ -190,7 +192,8 @@ a:hover {
 /* Footer */
 footer {
     margin-top: auto;
-    box-shadow: 0 -2px 4px rgba(0,0,0,.1);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
 }
 
 /* Responsivo */
