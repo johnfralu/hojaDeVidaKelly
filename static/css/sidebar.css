@@ -30,30 +30,35 @@ body {
 /* Estilos para el botón Volver Arriba */
 .btn-back-to-top {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    background-color: #81d8d0; /* El azul Tiffany que usas en Vanta */
+    bottom: 85px; /* Lo subimos para que no choque con el botón Admin */
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background-color: #81d8d0; /* Tu azul Tiffany */
     color: white;
     border-radius: 50%;
-    display: none; /* Se activa con JS */
+    display: none; /* JS lo mostrará */
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Por encima de todo */
+    z-index: 1050; /* Por encima de la mayoría de los elementos */
     border: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
+    padding: 0; /* Evita desplazamientos internos */
 }
 
 .btn-back-to-top:hover {
     transform: translateY(-5px);
-    background-color: #6bc2ba;
+    background-color: #6fbdb5;
+    color: white;
 }
 
+/* Centrado preciso del icono */
 .btn-back-to-top i {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    line-height: 0; /* Elimina el espacio extra vertical del icono */
+    display: inline-flex;
 }
 
     /* Ajuste para móviles para que no tape contenido importante */
