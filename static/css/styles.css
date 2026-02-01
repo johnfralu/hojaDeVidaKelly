@@ -571,3 +571,91 @@ footer {
     background-color: white !important;
     border: 1px solid #eee;
 }
+
+/* Paleta Verde Menta Pastel para Cursos */
+:root {
+    --cur-mint-main: #10b981; /* Verde esmeralda/menta para énfasis */
+    --cur-mint-soft: #d1fae5; /* Fondo menta muy suave */
+    --cur-text-dark: #1f2937;
+}
+
+.section-title-cur {
+    color: var(--cur-text-dark);
+}
+
+.custom-hr-cur {
+    width: 80px;
+    height: 5px;
+    background: var(--cur-mint-main);
+    border-radius: 10px;
+}
+
+/* Contenedor Principal del Curso */
+.course-container {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    border-left: 8px solid var(--cur-mint-main);
+    transition: transform 0.3s ease;
+}
+
+.course-container:hover {
+    transform: scale(1.01);
+}
+
+/* Badge de Fecha y Horas */
+.badge-date-cur {
+    background-color: var(--cur-mint-soft);
+    color: var(--cur-mint-main);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: inline-block;
+}
+
+.cur-title {
+    font-weight: 800;
+    color: var(--cur-text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.cur-entity {
+    color: var(--cur-mint-main);
+    font-weight: 600;
+}
+
+.soft-hr-cur {
+    border: 0;
+    border-top: 1px solid #ecfdf5;
+    margin: 1.5rem 0;
+}
+
+.cur-description h6 {
+    font-weight: 700;
+    color: var(--cur-text-dark);
+}
+
+.cur-description p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Columna Derecha (Preview) */
+.bg-mint-preview {
+    background-color: #f0fdf4; /* Tinte menta muy sutil para el fondo del preview */
+    border-left: 1px solid #d1fae5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Reutilizamos el botón rojo de PDF por estándar visual */
+.alert-mint-pastel {
+    background-color: var(--cur-mint-soft);
+    color: #065f46;
+    border: none;
+    border-radius: 15px;
+}

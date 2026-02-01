@@ -19,58 +19,58 @@
     <div class="row g-4">
         {% for rec in reconocimientos %}
         <div class="col-12 mb-5">
-<div class="recognition-container shadow-sm">
-    <div class="row g-0">
-        <div class="col-lg-6 p-4">
-            <div class="rec-info-side">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <span class="badge-year-pastel">{{ rec.fechareconocimiento|date:"Y" }}</span>
-                </div>
-                
-                <h3 class="rec-title">{{ rec.tiporeconocimiento }}</h3>
-                <h5 class="rec-institution">
-                    <i class="bi bi-bank"></i> {{ rec.entidadpatrocinadora }}
-                </h5>
-                
-                <hr class="soft-hr">
-                
-                <div class="rec-description">
-                    <h6><i class="bi bi-info-circle"></i> Detalles:</h6>
-                    <p>{{ rec.descripcionreconocimiento }}</p>
-                </div>
+            <div class="recognition-container shadow-sm">
+                <div class="row g-0">
+                    <div class="col-lg-6 p-4">
+                        <div class="rec-info-side">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge-year-pastel">{{ rec.fechareconocimiento|date:"Y" }}</span>
+                            </div>
+                            
+                            <h3 class="rec-title">{{ rec.tiporeconocimiento }}</h3>
+                            <h5 class="rec-institution">
+                                <i class="bi bi-bank"></i> {{ rec.entidadpatrocinadora }}
+                            </h5>
+                            
+                            <hr class="soft-hr">
+                            
+                            <div class="rec-description">
+                                <h6><i class="bi bi-info-circle"></i> Detalles:</h6>
+                                <p>{{ rec.descripcionreconocimiento }}</p>
+                            </div>
 
-                {% if rec.lugareconocimiento %}
-                <p class="rec-meta">
-                    <i class="bi bi-geo-alt"></i> {{ rec.lugareconocimiento }}
-                </p>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="col-lg-6 bg-light-preview p-3 text-center">
-            <div class="pdf-preview-container">
-                {% if rec.rutacertificado %}
-                    <div class="ratio ratio-4x3 mb-3 shadow-sm rounded overflow-hidden bg-white">
-                        <object data="{{ rec.rutacertificado.url }}" type="application/pdf" width="100%" height="100%">
-                            <p>Tu navegador no puede mostrar el PDF. 
-                                <a href="{{ rec.rutacertificado.url }}">Descárgalo aquí</a>.
+                            {% if rec.lugareconocimiento %}
+                            <p class="rec-meta">
+                                <i class="bi bi-geo-alt"></i> {{ rec.lugareconocimiento }}
                             </p>
-                        </object>
+                            {% endif %}
+                        </div>
                     </div>
-                    
-                    <a href="{{ rec.rutacertificado.url }}" target="_blank" class="btn-pdf-new-tab">
-                        <i class="bi bi-file-earmark-pdf-fill"></i> Abrir en una nueva pestaña
-                    </a>
-                {% else %}
-                    <div class="no-pdf-placeholder">
-                        <i class="bi bi-file-earmark-x" style="font-size: 3rem; color: #ccc;"></i>
-                        <p class="text-muted mt-2">No hay archivo adjunto para este reconocimiento</p>
+
+                    <div class="col-lg-6 bg-light-preview p-3 text-center">
+                        <div class="pdf-preview-container">
+                            {% if rec.rutacertificado %}
+                                <div class="ratio ratio-4x3 mb-3 shadow-sm rounded overflow-hidden bg-white">
+                                    <object data="{{ rec.rutacertificado.url }}" type="application/pdf" width="100%" height="100%">
+                                        <p>Tu navegador no puede mostrar el PDF. 
+                                            <a href="{{ rec.rutacertificado.url }}">Descárgalo aquí</a>.
+                                        </p>
+                                    </object>
+                                </div>
+                                
+                                <a href="{{ rec.rutacertificado.url }}" target="_blank" class="btn-pdf-new-tab">
+                                    <i class="bi bi-file-earmark-pdf-fill"></i> Abrir en una nueva pestaña
+                                </a>
+                            {% else %}
+                                <div class="no-pdf-placeholder">
+                                    <i class="bi bi-file-earmark-x" style="font-size: 3rem; color: #ccc;"></i>
+                                    <p class="text-muted mt-2">No hay archivo adjunto para este reconocimiento</p>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                {% endif %}
+                </div>
             </div>
-        </div>
-    </div>
-</div>
         </div>
         {% endfor %}
     </div>
