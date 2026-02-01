@@ -62,8 +62,8 @@ def get_configuracion(perfil):
     return config
 
 def perfil_profesional(request):
-    perfil = DatosPersonales.objects.first()
-    config = ConfiguracionSecciones.objects.first()
+    perfil = get_perfil_activo() # Mejor usar tu función helper
+    config = get_configuracion(perfil)
     
     # Obtener previews de cada sección (solo los activos)
     experiencias = ExperienciaLaboral.objects.filter(activarparaqueseveaenfront=True).order_by('-fechainiciogestion')
@@ -280,6 +280,8 @@ def generar_pdf(request):
         if not perfil:
             return HttpResponse({'error': 'No hay datos de perfil disponibles en el sistema.'}, status=404)
         
+        config = get_configuracion(perfil)
+
         # Configurar PDF
         buffer = BytesIO()
         doc = SimpleDocTemplate(
