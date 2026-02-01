@@ -3,45 +3,47 @@
 {% block title %}{{ page_title }} - Hoja de Vida{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-primary">
+<div class="container-fluid py-4">
+    <div class="row mb-5 text-center">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold section-title-prod">
                 <i class="bi bi-journal-text"></i> Productos Académicos
             </h1>
-            <hr class="w-50 mx-auto">
+            <p class="text-muted">Recursos, investigaciones y materiales desarrollados durante mi formación.</p>
+            <div class="custom-hr-prod mx-auto"></div>
         </div>
     </div>
-</div>
 
-{% if productos %}
-<div class="row">
-    {% for producto in productos %}
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow border-0 h-100">
-            <div class="card-header bg-info text-white">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-file-earmark-text"></i> {{ producto.nombrerecurso }}
-                </h5>
-            </div>
-            <div class="card-body">
-                <p class="mb-2">
-                    <i class="bi bi-tag text-info"></i>
-                    <strong>Clasificador:</strong> {{ producto.clasificador }}
-                </p>
-                <div class="mt-3">
-                    <h6 class="text-info">Descripción:</h6>
-                    <p class="text-muted">{{ producto.descripcion }}</p>
+    {% if productos %}
+    <div class="row justify-content-center">
+        {% for producto in productos %}
+        <div class="col-lg-10 mb-4">
+            <div class="product-card-sky shadow-sm">
+                <div class="product-header-flex">
+                    <div class="product-title-area">
+                        <h3 class="product-name">{{ producto.nombrerecurso }}</h3>
+                        <span class="badge-sky-tag">
+                            <i class="bi bi-tag-fill"></i> {{ producto.clasificador }}
+                        </span>
+                    </div>
+                </div>
+                
+                <hr class="soft-hr-sky">
+                
+                <div class="product-body">
+                    <h6 class="text-uppercase small fw-bold text-muted mb-2">
+                        <i class="bi bi-card-text"></i> Descripción:
+                    </h6>
+                    <p class="product-desc">{{ producto.descripcion }}</p>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    {% else %}
+    <div class="alert alert-sky-pastel text-center mx-auto" style="max-width: 600px;">
+        <i class="bi bi-info-circle"></i> No hay productos académicos registrados.
+    </div>
+    {% endif %}
 </div>
-{% else %}
-<div class="alert alert-info text-center">
-    <i class="bi bi-info-circle"></i>
-    <strong>No hay productos académicos registrados.</strong>
-</div>
-{% endif %}
 {% endblock %}

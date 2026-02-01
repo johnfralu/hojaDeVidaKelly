@@ -659,3 +659,78 @@ footer {
     border: none;
     border-radius: 15px;
 }
+
+/* Paleta Azul Cielo Pastel para Productos Académicos */
+:root {
+    --sky-main: #0ea5e9;       /* Azul cielo vibrante para acentos */
+    --sky-soft: #e0f2fe;       /* Azul muy claro para fondos */
+    --sky-text: #334155;       /* Gris azulado oscuro para texto */
+}
+
+.section-title-prod {
+    color: var(--sky-text);
+}
+
+.custom-hr-prod {
+    width: 80px;
+    height: 5px;
+    background: var(--sky-main);
+    border-radius: 10px;
+}
+
+/* Tarjeta de Producto */
+.product-card-sky {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 2rem;
+    border-left: 8px solid var(--sky-main);
+    transition: all 0.3s ease;
+}
+
+.product-card-sky:hover {
+    transform: translateX(10px); /* Efecto de desplazamiento lateral */
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.1) !important;
+}
+
+.product-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.product-name {
+    font-weight: 800;
+    color: var(--sky-text);
+    margin-bottom: 0.5rem;
+}
+
+.badge-sky-tag {
+    background-color: var(--sky-soft);
+    color: var(--sky-main);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-block;
+}
+
+.soft-hr-sky {
+    border: 0;
+    border-top: 1px solid #f1f5f9;
+    margin: 1.5rem 0;
+}
+
+.product-desc {
+    color: #64748b;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+/* Alert Estilo Sky */
+.alert-sky-pastel {
+    background-color: var(--sky-soft);
+    color: #0369a1;
+    border: none;
+    border-radius: 15px;
+    font-weight: 600;
+}
