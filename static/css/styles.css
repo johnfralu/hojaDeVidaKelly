@@ -560,3 +560,14 @@ footer {
     border: none;
     border-radius: 15px;
 }
+
+.rec-info-side .bi-tag-fill {
+    color: var(--rec-yellow-main);
+    margin-right: 4px;
+}
+
+/* Mejora el contenedor del PDF para que no se vea vacío mientras carga */
+.ratio.bg-white {
+    background-color: white !important;
+    border: 1px solid #eee;
+}
