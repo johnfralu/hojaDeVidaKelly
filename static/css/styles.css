@@ -263,6 +263,26 @@ footer {
     }
 }
 
+@keyframes pulse-soft {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse-animation {
+    animation: pulse-soft 2s infinite ease-in-out;
+}
+
+/* Asegura que los switches tengan el orden visual correcto (Label izquierda, Switch derecha) */
+.custom-switch-item {
+    flex-direction: row-reverse; /* Esto pone el slider a la derecha del texto */
+}
+
+.custom-switch-item .form-check-input {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 /* Aplicar la animación a los elementos del menú */
 .sidebar.pinned .sidebar-text, 
 .sidebar.pinned .sidebar-nombre,
@@ -1044,4 +1064,63 @@ footer {
     border-radius: 10px;
     padding: 0.6rem 1.5rem;
     font-weight: 600;
+}
+
+/* Estilos comunes para los contenedores de Switches */
+.custom-switch-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    background-color: #f8fafc;
+    border: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+.custom-switch-item label {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.custom-switch-item .form-check-input {
+    width: 2.8em; /* Más ancho para que parezca slider */
+    height: 1.4em;
+    cursor: pointer;
+}
+
+/* --- Colores para Modal CONFIG (Morado/Lila) --- */
+.config-switches .custom-switch-item:hover {
+    background-color: #f3e8ff;
+    border-color: #e9d5ff;
+}
+
+.config-switches .form-check-input:checked {
+    background-color: #818cf8; /* Lila Principal */
+    border-color: #818cf8;
+}
+
+.config-switches .form-check-input:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 0.25rem rgba(129, 140, 248, 0.25);
+}
+
+/* --- Colores para Modal PDF (Salmón) --- */
+.pdf-switches .custom-switch-item:hover {
+    background-color: #fff1f2;
+    border-color: #ffe4e6;
+}
+
+.pdf-switches .form-check-input:checked {
+    background-color: #fb7185; /* Salmón Principal */
+    border-color: #fb7185;
+}
+
+.pdf-switches .form-check-input:focus {
+    border-color: #fb7185;
+    box-shadow: 0 0 0 0.25rem rgba(251, 113, 133, 0.25);
 }
