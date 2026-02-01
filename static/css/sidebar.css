@@ -434,12 +434,12 @@ body {
    ========================================== */
 
 .footer {
-    margin-left: var(--sidebar-width-collapsed);
-    transition: margin-left var(--transition-speed) ease;
-    background: #343a40;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente para el footer */
-    color: #333;
-    padding: 1.2rem 1.5rem;
+    /* Color oscuro original (ajusta el hexadecimal si era otro) */
+    background-color: #1a1a1a !important; 
+    color: #ffffff !important; /* Texto blanco para que resalte */
+    padding: 20px 0;
+    position: relative;
+    z-index: 10; /* Para que quede por encima del fondo de Vanta */
 }
 
 .sidebar.expanded ~ .footer,
@@ -461,6 +461,10 @@ body {
     opacity: 0.8;
 }
 
+.footer-text p, .footer-btn-admin {
+    color: #ffffff !important;
+}
+
 .footer-btn-admin {
     display: flex;
     align-items: center;
@@ -474,6 +478,10 @@ body {
     font-weight: 600;
     transition: all 0.3s ease;
     white-space: nowrap;
+}
+
+.footer-btn-admin i {
+    color: #818cf8; /* El toque lavanda/azul que tenías en los iconos */
 }
 
 .footer-btn-admin:hover {
