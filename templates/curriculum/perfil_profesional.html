@@ -3,48 +3,60 @@
 
 {% block extra_css %}
 <style>
-    /* Glassmorphism Ultra Transparente */
+    /* Efecto Cristal para la sección Principal (Hero) */
     .perfil-hero {
-        /* Bajamos de 0.2 a 0.1 (10% de blanco) */
-        background: rgba(255, 255, 255, 0.1) !important; 
-        
-        /* Bajamos el desenfoque de 12px a 6px para ver mejor el fondo */
+        background: rgba(255, 255, 255, 0.1) !important; /* Blanco muy transparente */
         backdrop-filter: blur(6px) saturate(150%);
         -webkit-backdrop-filter: blur(6px) saturate(150%);
-        
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 24px;
         padding: 40px;
         margin-bottom: 40px;
-        /* Sombra más sutil para no ensuciar la transparencia */
-        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05); 
+        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
     }
 
-    /* Tarjetas de información aún más claras */
+    /* Ajuste para las tarjetas de Datos Personales, Contacto y Ubicación */
     .info-card {
-        background: rgba(255, 255, 255, 0.05) !important; /* Casi invisible */
+        background: rgba(255, 255, 255, 0.05) !important;
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
         border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 20px;
-        transition: all 0.3s ease;
+        transition: transform 0.3s ease;
+        height: 100%;
     }
 
     .info-card:hover {
-        /* Al pasar el mouse se aclara un poquito para dar feedback */
-        background: rgba(255, 255, 255, 0.15) !important;
         transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.15) !important;
     }
 
-    /* Ajuste de contraste para el texto */
-    .perfil-nombre, .info-card-title {
-        color: #1a1a1a; /* Texto bien oscuro para que se lea sobre la transparencia */
-        font-weight: 800;
+    /* Estilo para los botones sobre Glassmorphism */
+    .btn-descargar-cv {
+        background-color: #81d8d0; /* Azul Tiffany */
+        color: #000;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(129, 216, 208, 0.4);
     }
 
-    .info-label {
-        color: #333;
-        font-weight: 600;
+    .btn-descargar-cv:hover {
+        background-color: #a6ce39; /* Verde Lima al pasar el mouse */
+        transform: scale(1.05);
+    }
+
+    /* Asegurar que el texto sea legible */
+    .perfil-nombre {
+        color: #2d3436;
+        text-shadow: 0 2px 4px rgba(255,255,255,0.5);
+    }
+
+    .perfil-descripcion {
+        color: #4a4a4a;
+        font-weight: 500;
     }
 </style>
 {% endblock %}
