@@ -808,3 +808,102 @@ footer {
     border-radius: 15px;
     font-weight: 600;
 }
+
+/* Paleta Lila Pastel para Venta Garage */
+:root {
+    --purple-main: #a855f7;    /* Morado/Lila vibrante */
+    --purple-soft: #f3e8ff;    /* Fondo lila muy suave */
+    --garage-text: #581c87;    /* Texto morado oscuro */
+}
+
+.section-title-garage { color: var(--garage-text); }
+
+.custom-hr-garage {
+    width: 80px;
+    height: 5px;
+    background: var(--purple-main);
+    border-radius: 10px;
+}
+
+/* Tarjeta Garage */
+.garage-card {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #f3e8ff;
+    transition: all 0.3s ease;
+}
+
+.garage-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(168, 85, 247, 0.15) !important;
+}
+
+/* Contenedor de Imagen */
+.garage-img-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.img-garage-fluid {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.garage-card:hover .img-garage-fluid {
+    transform: scale(1.1);
+}
+
+/* Etiqueta de Precio */
+.price-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--purple-main);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Badges de Estado */
+.badge-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase; /* <--- El cambio está aquí */
+}
+
+.status-good { background: #dcfce7; color: #15803d; }
+.status-regular { background: #fef9c3; color: #a16207; }
+
+.garage-item-title {
+    font-weight: 700;
+    color: var(--garage-text);
+}
+
+.soft-hr-garage {
+    border: 0;
+    border-top: 1px solid #f3e8ff;
+    margin: 10px 0;
+}
+
+/* Alert Estilo Purple */
+.alert-purple-pastel {
+    background-color: var(--purple-soft);
+    color: var(--garage-text);
+    border: none;
+    border-radius: 15px;
+}
+
+/* Estilo del Botón de Cerrar del Modal */
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
