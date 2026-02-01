@@ -27,6 +27,45 @@ body {
     overflow-x: hidden !important;
 }
 
+/* Estilos para el botón Volver Arriba */
+    .btn-back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 45px;
+        height: 45px;
+        background-color: #81d8d0; /* El azul Tiffany que usas en Vanta */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none; /* Oculto inicialmente */
+        z-index: 1050; /* Por encima de casi todo */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        font-size: 24px;
+        display: none; /* Se activa con JS */
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-back-to-top:hover {
+        background-color: #6bc4bc;
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        color: white;
+    }
+
+    /* Ajuste para móviles para que no tape contenido importante */
+    @media (max-width: 768px) {
+        .btn-back-to-top {
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+        }
+    }
+
 /* ==========================================
    BARRA DE PROGRESO
    ========================================== */

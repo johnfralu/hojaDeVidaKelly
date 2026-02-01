@@ -584,7 +584,35 @@
             const miModal = new bootstrap.Modal(document.getElementById('imageModal'));
             miModal.show();
         }
+
+        // ==========================================
+        // BOTÓN VOLVER ARRIBA
+        // ==========================================
+        const scrollBtn = document.getElementById("scrollToTop");
+
+        window.addEventListener('scroll', function() {
+            // Lógica existente de la barra de progreso...
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            
+            // Lógica del botón: aparecer tras 300px de scroll
+            if (scrollTop > 300) {
+                scrollBtn.style.display = "flex";
+            } else {
+                scrollBtn.style.display = "none";
+            }
+        });
+
+        scrollBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
     </script>
     {% block extra_js %}{% endblock %}
+    <button id="scrollToTop" class="btn-back-to-top" title="Volver arriba">
+        <i class="bi bi-arrow-up-short"></i>
+    </button>
 </body>
 </html>
