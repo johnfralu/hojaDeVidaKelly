@@ -23,6 +23,7 @@ from .models import (
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
+@require_POST
 def actualizar_configuracion(request):
     try:
         data = json.loads(request.body)
@@ -45,6 +46,7 @@ def actualizar_configuracion(request):
             
         return JsonResponse({'success': True})
     except Exception as e:
+        print(f"Error en actualizar_configuracion: {e}")
         return JsonResponse({'success': False, 'error': str(e)}, status=400)
     
 def get_perfil_activo():
@@ -185,32 +187,6 @@ def venta_garage(request):
         'page_title': 'Venta Garage'
     }
     return render(request, 'curriculum/venta_garage.html', context)
-
-@require_POST
-def actualizar_configuracion(request):
-
-    """Actualiza la configuración en la DB (si hay perfil) o en la sesión (si es anónimo)"""
-    data = json.loads(request.body)
-    
-    # 1. Intentamos guardar en la sesión del navegador (útil para todos)
-    request.session['config_pdf'] = data
-    request.session.modified = True
-
-    """Actualiza la configuración de secciones visibles"""
-    perfil = get_perfil_activo()
-    if perfil and request.user.is_authenticated:
-        data = json.loads(request.body)
-        config = get_configuracion(perfil)
-        config.mostrar_perfil = data.get('mostrar_perfil', True)
-        config.mostrar_experiencia = data.get('mostrar_experiencia', True)
-        config.mostrar_reconocimientos = data.get('mostrar_reconocimientos', True)
-        config.mostrar_cursos = data.get('mostrar_cursos', True)
-        config.mostrar_productos_academicos = data.get('mostrar_productos_academicos', True)
-        config.mostrar_productos_laborales = data.get('mostrar_productos_laborales', True)
-        config.mostrar_venta_garage = data.get('mostrar_venta_garage', True)
-        config.save()
-    
-    return JsonResponse({'success': True})
 
 class NumberedCanvas(canvas.Canvas):
     """Canvas personalizado para agregar número de página y encabezado"""
