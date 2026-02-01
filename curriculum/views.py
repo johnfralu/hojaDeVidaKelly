@@ -20,7 +20,33 @@ from .models import (
     CursosRealizados, ProductosAcademicos, ProductosLaborales, VentaGarage,
     ConfiguracionSecciones
 )
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
+def actualizar_configuracion(request):
+    try:
+        data = json.loads(request.body)
+        # Guardamos en la sesión para que el usuario anónimo "recuerde" sus cambios
+        request.session['config_pdf'] = data
+        request.session.modified = True
+        
+        perfil = get_perfil_activo()
+        # Solo intentamos guardar en DB si hay perfil y el usuario tiene permisos
+        if perfil and request.user.is_authenticated:
+            config, _ = ConfiguracionSecciones.objects.get_or_create(perfil=perfil)
+            config.mostrar_perfil = data.get('mostrar_perfil', True)
+            config.mostrar_experiencia = data.get('mostrar_experiencia', True)
+            config.mostrar_reconocimientos = data.get('mostrar_reconocimientos', True)
+            config.mostrar_cursos = data.get('mostrar_cursos', True)
+            config.mostrar_productos_academicos = data.get('mostrar_productos_academicos', True)
+            config.mostrar_productos_laborales = data.get('mostrar_productos_laborales', True)
+            config.mostrar_venta_garage = data.get('mostrar_venta_garage', True)
+            config.save()
+            
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+    
 def get_perfil_activo():
     """Obtiene el perfil marcado como activo o el primero disponible"""
     perfil = DatosPersonales.objects.filter(perfilactivo=1).first()
@@ -256,21 +282,27 @@ class FooterCanvas(canvas.Canvas):
         # Fecha de generación
         self.drawString(2*cm, 1.5*cm, f"Generado: {datetime.now().strftime('%d/%m/%Y')}")
 
+@csrf_exempt
 def generar_pdf(request):
     """Genera PDF profesional de hoja de vida"""
     try:
         if request.method != 'POST':
-            return JsonResponse({'error': 'Método no permitido'}, status=405)
+            return HttpResponse({'error': 'Método no permitido'}, status=405)
         
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except:
+            # Si el JS envía mal los datos, tomamos todo por defecto
+            data = {'secciones': ['perfil', 'experiencia', 'reconocimientos', 'cursos']}
+        
         secciones_seleccionadas = data.get('secciones', [])
         
         if not secciones_seleccionadas:
-            return JsonResponse({'error': 'No se seleccionaron secciones'}, status=400)
+            return HttpResponse({'error': 'No se seleccionaron secciones'}, status=400)
         
         perfil = get_perfil_activo()
         if not perfil:
-            return JsonResponse({'error': 'No hay datos de perfil disponibles en el sistema.'}, status=404)
+            return HttpResponse({'error': 'No hay datos de perfil disponibles en el sistema.'}, status=404)
         
         # Configurar PDF
         buffer = BytesIO()
