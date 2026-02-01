@@ -160,8 +160,10 @@ body {
     color: var(--sidebar-active);
 }
 
+/* Estilo visual del botón pin cuando está activo */
 .btn-pin.pinned i {
-    transform: rotate(45deg);
+    transform: rotate(0deg);
+    color: #818cf8; /* Color lavanda que usamos */
 }
 
 /* ==========================================
@@ -531,6 +533,14 @@ body {
         transition: transform var(--transition-speed) ease;
     }
 
+    .sidebar.pinned {
+        width: 260px; /* O el ancho que uses para el menú expandido */
+    }
+    
+    .sidebar.pinned ~ .main-content {
+        margin-left: 260px;
+    }
+    
     .sidebar.mobile-open {
         transform: translateX(0);
     }

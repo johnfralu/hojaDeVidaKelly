@@ -340,14 +340,17 @@
         const btnMobileMenu = document.getElementById('btnMobileMenu');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         
-        let isPinned = localStorage.getItem('sidebarPinned') === 'true';
-        let hoverTimeout;
+        let storedPinned = localStorage.getItem('sidebarPinned');
+        let isPinned = storedPinned === null ? true : storedPinned === 'true';
 
         // Estado inicial del pin
         if (isPinned) {
             sidebar.classList.add('pinned');
             btnPin.classList.add('pinned');
             btnPin.title = 'Desfijar menú';
+        } else {
+            sidebar.classList.remove('pinned');
+            btnPin.classList.remove('pinned');
         }
 
         // Hover - expandir
