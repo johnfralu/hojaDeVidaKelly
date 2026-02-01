@@ -320,6 +320,10 @@
         </div>
     </div>
 
+    <button id="scrollToTop" class="btn-back-to-top" title="Volver arriba">
+        <i class="bi bi-arrow-up-short"></i>
+    </button>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
@@ -591,28 +595,32 @@
         const scrollBtn = document.getElementById("scrollToTop");
 
         window.addEventListener('scroll', function() {
-            // Lógica existente de la barra de progreso...
+            const scrollBtn = document.getElementById("scrollToTop");
+            if (!scrollBtn) return; // Seguridad
+
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
             
-            // Lógica del botón: aparecer tras 300px de scroll
+            // Si pasamos de 300px, mostrar
             if (scrollTop > 300) {
-                scrollBtn.style.display = "flex";
+                scrollBtn.classList.add('show'); // Es mejor usar clases que .style.display
+                scrollBtn.style.display = "flex"; 
             } else {
+                scrollBtn.classList.remove('show');
                 scrollBtn.style.display = "none";
             }
         });
 
-        scrollBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollBtn = document.getElementById("scrollToTop");
+            scrollBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
             });
         });
 
     </script>
     {% block extra_js %}{% endblock %}
-    <button id="scrollToTop" class="btn-back-to-top" title="Volver arriba">
-        <i class="bi bi-arrow-up-short"></i>
-    </button>
 </body>
 </html>

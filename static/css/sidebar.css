@@ -28,33 +28,33 @@ body {
 }
 
 /* Estilos para el botón Volver Arriba */
-    .btn-back-to-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 45px;
-        height: 45px;
-        background-color: #81d8d0; /* El azul Tiffany que usas en Vanta */
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        display: none; /* Oculto inicialmente */
-        z-index: 1050; /* Por encima de casi todo */
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        transition: all 0.3s ease;
-        font-size: 24px;
-        display: none; /* Se activa con JS */
-        align-items: center;
-        justify-content: center;
-    }
+.btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: #81d8d0; /* El azul Tiffany que usas en Vanta */
+    color: white;
+    border-radius: 50%;
+    display: none; /* Se activa con JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Por encima de todo */
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
 
-    .btn-back-to-top:hover {
-        background-color: #6bc4bc;
-        transform: translateY(-5px);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        color: white;
-    }
+.btn-back-to-top:hover {
+    transform: translateY(-5px);
+    background-color: #6bc2ba;
+}
+
+.btn-back-to-top i {
+    font-size: 1.5rem;
+}
 
     /* Ajuste para móviles para que no tape contenido importante */
     @media (max-width: 768px) {
