@@ -173,7 +173,7 @@ a:hover {
 }
 
 .modal-header {
-    background-color: #0d6efd;
+    background-color: #581c87;
     color: white;
     border-radius: 10px 10px 0 0;
 }
@@ -249,6 +249,34 @@ footer {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Animación de entrada suave */
+@keyframes fadeInSidebar {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Aplicar la animación a los elementos del menú */
+.sidebar.pinned .sidebar-text, 
+.sidebar.pinned .sidebar-nombre,
+.sidebar.pinned .sidebar-foto {
+    animation: fadeInSidebar 0.5s ease-out forwards;
+}
+
+/* Transición suave para el cambio de ancho del sidebar */
+.sidebar {
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+}
+
+.main-content {
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card {
