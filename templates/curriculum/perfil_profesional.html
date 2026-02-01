@@ -1,6 +1,66 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+    /* Efecto Cristal para la sección Principal (Hero) */
+    .perfil-hero {
+        background: rgba(255, 255, 255, 0.2) !important; /* Blanco muy transparente */
+        backdrop-filter: blur(12px) saturate(180%);
+        -webkit-backdrop-filter: blur(12px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    /* Ajuste para las tarjetas de Datos Personales, Contacto y Ubicación */
+    .info-card {
+        background: rgba(255, 255, 255, 0.4) !important;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    /* Estilo para los botones sobre Glassmorphism */
+    .btn-descargar-cv {
+        background-color: #81d8d0; /* Azul Tiffany */
+        color: #000;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(129, 216, 208, 0.4);
+    }
+
+    .btn-descargar-cv:hover {
+        background-color: #a6ce39; /* Verde Lima al pasar el mouse */
+        transform: scale(1.05);
+    }
+
+    /* Asegurar que el texto sea legible */
+    .perfil-nombre {
+        color: #2d3436;
+        text-shadow: 0 2px 4px rgba(255,255,255,0.5);
+    }
+
+    .perfil-descripcion {
+        color: #4a4a4a;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
 {% block title %}Perfil Profesional - {{ perfil.nombres }} {{ perfil.apellidos }}{% endblock %}
 
 {% block content %}
