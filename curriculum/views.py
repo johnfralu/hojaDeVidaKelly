@@ -27,24 +27,31 @@ from django.views.decorators.csrf import csrf_exempt
 def actualizar_configuracion(request):
     try:
         data = json.loads(request.body)
-        # Guardamos en la sesión para que el usuario anónimo "recuerde" sus cambios
+        perfil = get_perfil_activo()
+        
+        # 1. Guardar en sesión como respaldo
         request.session['config_pdf'] = data
         request.session.modified = True
         
-        perfil = get_perfil_activo()
-        # Solo intentamos guardar en DB si hay perfil y el usuario tiene permisos
-        if perfil and request.user.is_authenticated:
-            config, _ = ConfiguracionSecciones.objects.get_or_create(perfil=perfil)
-            config.mostrar_perfil = data.get('mostrar_perfil', True)
-            config.mostrar_experiencia = data.get('mostrar_experiencia', True)
-            config.mostrar_reconocimientos = data.get('mostrar_reconocimientos', True)
-            config.mostrar_cursos = data.get('mostrar_cursos', True)
-            config.mostrar_productos_academicos = data.get('mostrar_productos_academicos', True)
-            config.mostrar_productos_laborales = data.get('mostrar_productos_laborales', True)
-            config.mostrar_venta_garage = data.get('mostrar_venta_garage', True)
-            config.save()
+        # 2. Persistir en Base de Datos
+        if perfil:
+            # get_or_create asegura que si no existe el registro para ese perfil, se cree uno
+            config, created = ConfiguracionSecciones.objects.get_or_create(perfil=perfil)
             
-        return JsonResponse({'success': True})
+            # Mapeo explícito para evitar errores de nombres de campos
+            config.mostrar_perfil = data.get('perfil', data.get('mostrar_perfil', True))
+            config.mostrar_experiencia = data.get('experiencia', data.get('mostrar_experiencia', True))
+            config.mostrar_reconocimientos = data.get('reconocimientos', data.get('mostrar_reconocimientos', True))
+            config.mostrar_cursos = data.get('cursos', data.get('mostrar_cursos', True))
+            config.mostrar_productos_academicos = data.get('productosacademicos', data.get('mostrar_productos_academicos', True))
+            config.mostrar_productos_laborales = data.get('productoslaborales', data.get('mostrar_productos_laborales', True))
+            config.mostrar_venta_garage = data.get('ventagarage', data.get('mostrar_venta_garage', True))
+            
+            config.save()
+            return JsonResponse({'success': True, 'message': 'Configuración guardada en DB'})
+        
+        return JsonResponse({'success': True, 'message': 'Guardado solo en sesión (sin perfil activo)'})
+
     except Exception as e:
         print(f"Error en actualizar_configuracion: {e}")
         return JsonResponse({'success': False, 'error': str(e)}, status=400)
