@@ -236,7 +236,7 @@ class FooterCanvas(canvas.Canvas):
 
     def draw_footer(self, page_count):
         # Línea superior del pie
-        self.setStrokeColor(colors.HexColor('#0d6efd'))
+        self.setStrokeColor(colors.HexColor('#818cf8'))
         self.setLineWidth(1)
         self.line(2*cm, 2*cm, A4[0] - 2*cm, 2*cm)
         
@@ -249,459 +249,161 @@ class FooterCanvas(canvas.Canvas):
         self.drawString(2*cm, 1.5*cm, f"Generado: {datetime.now().strftime('%d/%m/%Y')}")
 
 def generar_pdf(request):
-    """Genera PDF profesional de hoja de vida"""
+    """Genera PDF con diseño premium en colores pasteles"""
     try:
         if request.method != 'POST':
             return JsonResponse({'error': 'Método no permitido'}, status=405)
         
         data = json.loads(request.body)
         secciones_seleccionadas = data.get('secciones', [])
-        
-        if not secciones_seleccionadas:
-            return JsonResponse({'error': 'No se seleccionaron secciones'}, status=400)
-        
         perfil = get_perfil_activo()
+        
         if not perfil:
             return JsonResponse({'error': 'No hay perfil activo'}, status=400)
         
-        # Configurar PDF
         buffer = BytesIO()
+        # Márgenes más amplios para un look de diseño
         doc = SimpleDocTemplate(
             buffer,
             pagesize=A4,
-            rightMargin=2*cm,
-            leftMargin=2*cm,
+            rightMargin=1.5*cm,
+            leftMargin=1.5*cm,
             topMargin=1.5*cm,
-            bottomMargin=2.5*cm,
-            title=f"CV - {perfil.nombres} {perfil.apellidos}"
+            bottomMargin=2*cm
         )
         
-        # Colores corporativos
-        COLOR_PRIMARY = colors.HexColor('#0d6efd')
-        COLOR_DARK = colors.HexColor('#212529')
-        COLOR_GRAY = colors.HexColor('#6c757d')
-        COLOR_LIGHT_BG = colors.HexColor('#f8f9fa')
-        # 1. DEFINIR COLORES PRIMERO
-        color_primario = colors.HexColor('#0d6efd')
-        color_secundario = colors.HexColor('#6c757d')
-        color_fondo = colors.HexColor('#f8f9fa')
-
-        # Estilos
+        # --- PALETA DE COLORES PASTELES ---
+        C_LAVANDA = colors.HexColor('#818cf8')  # Principal
+        C_MENTA = colors.HexColor('#10b981')    # Cursos
+        C_SALMON = colors.HexColor('#fb7185')   # Laboral
+        C_CIELO = colors.HexColor('#0ea5e9')    # Académico
+        C_TEXT_DARK = colors.HexColor('#1e293b')
+        C_TEXT_GRAY = colors.HexColor('#64748b')
+        C_BG_LIGHT = colors.HexColor('#f8fafc')
+        
         styles = getSampleStyleSheet()
 
-        # Función auxiliar para añadir o actualizar estilos sin que explote
-        def add_style(name, parent, **kwargs):
-            if name in styles:
-                # Si ya existe, lo modificamos
-                for key, value in kwargs.items():
-                    setattr(styles[name], key, value)
-            else:
-                # Si no existe, lo creamos
-                styles.add(ParagraphStyle(name=name, parent=parent, **kwargs))
-
-        # --- Definición de tus estilos personalizados ---
-        
-        # Título principal
-        add_style('MainTitle', styles['Heading1'], fontSize=24, textColor=color_primario, 
-                  alignment=TA_CENTER, fontName='Helvetica-Bold', spaceAfter=6)
-        
-        # Título de sección (con fondo azul)
-        add_style('SectionTitle', styles['Heading2'], fontSize=14, textColor=colors.white, 
-                  backColor=color_primario, fontName='Helvetica-Bold', leftIndent=10, 
-                  rightIndent=10, leading=20, spaceBefore=12, spaceAfter=12)
-
-        # Texto Justificado (tu reemplazo para BodyText para evitar el KeyError)
-        add_style('Justified', styles['Normal'], fontSize=10, alignment=TA_JUSTIFY, 
-                  leading=16, spaceAfter=10)
-
-        # EL QUE TE DA EL ERROR: SmallText
-        add_style('SmallText', styles['Normal'], fontSize=9, textColor=color_secundario, 
-                  leading=14)
-        
-        # EntryTitle
-        add_style('EntryTitle', styles['Normal'], fontSize=12, textColor=color_primario, 
-                  fontName='Helvetica-Bold', spaceAfter=4)
-        
+        # Estilo para el nombre (Gigante y elegante)
         styles.add(ParagraphStyle(
-            name='CVTitle',
-            parent=styles['Normal'],
-            fontSize=24,
-            leading=28,
-            textColor=COLOR_PRIMARY,
+            name='NombreHeader',
+            fontSize=26,
             fontName='Helvetica-Bold',
-            spaceAfter=2,
-            alignment=TA_LEFT
+            textColor=C_TEXT_DARK,
+            alignment=TA_LEFT,
+            spaceAfter=2
         ))
-        
+
+        # Estilo para títulos de sección con línea lateral
         styles.add(ParagraphStyle(
-            name='CVSubtitle',
-            parent=styles['Normal'],
-            fontSize=11,
-            leading=14,
-            textColor=COLOR_GRAY,
-            fontName='Helvetica',
-            spaceAfter=10
-        ))
-        
-        styles.add(ParagraphStyle(
-            name='SectionHeader',
-            parent=styles['Normal'],
-            fontSize=16,
-            textColor=COLOR_PRIMARY,
+            name='SectionHeading',
+            fontSize=14,
             fontName='Helvetica-Bold',
-            spaceAfter=10,
+            textColor=C_LAVANDA,
             spaceBefore=15,
-            borderPadding=(5, 5, 5, 5),
-            borderColor=COLOR_PRIMARY,
+            spaceAfter=10,
+            borderPadding=(2, 0, 5, 0),
             borderWidth=0,
-            leftIndent=0
+            # Simularemos una línea inferior pastel
         ))
-        
+
         styles.add(ParagraphStyle(
-            name='JobTitle',
-            parent=styles['Normal'],
-            fontSize=13,
-            textColor=COLOR_DARK,
-            fontName='Helvetica-Bold',
-            spaceAfter=3
-        ))
-        
-        styles.add(ParagraphStyle(
-            name='CompanyInfo',
-            parent=styles['Normal'],
-            fontSize=10,
-            textColor=COLOR_GRAY,
-            fontName='Helvetica',
-            leading=14,
-            spaceAfter=6
-        ))
-        
-        styles.add(ParagraphStyle(
-            name='CustomBodyText',
-            parent=styles['Normal'],
-            fontSize=10,
-            alignment=TA_JUSTIFY,
-            leading=16,
-            spaceAfter=10
-        ))
-        
-        styles.add(ParagraphStyle(
-            name='SmallGray',
-            parent=styles['Normal'],
+            name='NormalMini',
             fontSize=9,
-            textColor=COLOR_GRAY,
-            leading=12
+            textColor=C_TEXT_GRAY,
+            leading=11
         ))
-        
-        # Contenido
+
         story = []
-        
-        # ========== ENCABEZADO CON FOTO ==========
-        header_table_data = []
-        
-        # Intentar cargar foto
-        foto_col = []
+
+        # ========== ENCABEZADO PREMIUM ==========
+        foto_element = []
         if perfil.foto_perfil:
             try:
-                img_url = perfil.foto_perfil.url
-                response = requests.get(img_url, timeout=10)
-                
-                if response.status_code == 200:
-                    # Procesar imagen
-                    img_data = BytesIO(response.content)
-                    pil_img = PILImage.open(img_data)
-                    
-                    # Redimensionar manteniendo aspecto
-                    img_width = 4*cm
-                    img_height = 4*cm
-                    
-                    # Crear imagen para ReportLab
-                    img_buffer = BytesIO()
-                    pil_img.save(img_buffer, format='PNG')
-                    img_buffer.seek(0)
-                    
-                    foto = RLImage(img_buffer, width=img_width, height=img_height)
-                    foto_col = [foto]
-            except Exception as e:
-                print(f"Error cargando foto: {e}")
-                foto_col = [Paragraph("", styles['Normal'])]
-        
-        # Información del encabezado
-        nombre_completo = f"{perfil.nombres} {perfil.apellidos}"
-        
-        info_col = []
-        info_col.append(Paragraph(nombre_completo, styles['CVTitle']))
-        # Combinamos Cédula y contacto en un solo Paragraph para mejor control
-        contacto_linea = f"Cédula: {perfil.numerocedula}"
-        contacto_datos = []
-        if perfil.telefonoconvencional: contacto_datos.append(perfil.telefonoconvencional)
-        if perfil.sitioweb: contacto_datos.append(perfil.sitioweb)
-        
-        datos_html = f"{contacto_linea}<br/>"
-        if contacto_datos:
-            datos_html += f"{' | '.join(contacto_datos)}<br/>"
-        if perfil.direcciondomiciliaria:
-            datos_html += f"{perfil.direcciondomiciliaria}"        
-        info_col.append(Paragraph(f"Cédula: {perfil.numerocedula}", styles['CVSubtitle']))
-        
-        contacto_items = []
-        if perfil.telefonoconvencional:
-            contacto_items.append(f"📱 {perfil.telefonoconvencional}")
-        if perfil.sitioweb:
-            contacto_items.append(f"🌐 {perfil.sitioweb}")
-        if perfil.direcciondomiciliaria:
-            contacto_items.append(f"📍 {perfil.direcciondomiciliaria}")
-        
-        if contacto_items:
-            info_col.append(Paragraph(" | ".join(contacto_items), styles['SmallGray']))
-        
-        # Tabla del encabezado
-        if foto_col:
-            header_table = Table([[foto_col, info_col]], colWidths=[5*cm, None])
-            header_table.setStyle(TableStyle([
-                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ('LEFTPADDING', (0, 0), (-1, -1), 0),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 10),
-            ]))
-            story.append(header_table)
-        else:
-            for item in info_col:
-                story.append(item)
-        
-        # Línea separadora
-        story.append(Spacer(1, 0.3*cm))
-        sep_table = Table([['']], colWidths=[doc.width])
-        sep_table.setStyle(TableStyle([
-            ('LINEABOVE', (0, 0), (-1, 0), 2, COLOR_PRIMARY)
+                response = requests.get(perfil.foto_perfil.url, timeout=5)
+                img = PILImage.open(BytesIO(response.content))
+                # Hacer la foto redonda o cuadrada con bordes suaves
+                img_buffer = BytesIO()
+                img.save(img_buffer, format='PNG')
+                img_buffer.seek(0)
+                foto = RLImage(img_buffer, width=3.5*cm, height=3.5*cm)
+                foto_element = [foto]
+            except:
+                foto_element = []
+
+        info_header = [
+            Paragraph(f"{perfil.nombres} {perfil.apellidos}", styles['NombreHeader']),
+            Paragraph(f"<font color='#818cf8'><b>ID:</b></font> {perfil.numerocedula} | <font color='#818cf8'><b>📍</b></font> {perfil.lugarnacimiento}", styles['Normal']),
+            Spacer(1, 4),
+            Paragraph(f"📧 {perfil.sitioweb if perfil.sitioweb else 'No especificado'}", styles['NormalMini']),
+            Paragraph(f"📱 {perfil.telefonoconvencional}", styles['NormalMini']),
+            Paragraph(f"🏠 {perfil.direcciondomiciliaria}", styles['NormalMini']),
+        ]
+
+        header_table = Table([[foto_element, info_header]], colWidths=[4*cm, 14*cm])
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
         ]))
-        story.append(sep_table)
-        story.append(Spacer(1, 0.3*cm))
+        story.append(header_table)
+        story.append(Spacer(1, 15))
         
-        # ========== PERFIL PROFESIONAL ==========
+        # Línea decorativa pastel
+        line_table = Table([['']], colWidths=[18*cm], rowHeights=[2])
+        line_table.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), C_LAVANDA)]))
+        story.append(line_table)
+        story.append(Spacer(1, 10))
+
+        # ========== SECCIÓN: PERFIL ==========
         if 'perfil' in secciones_seleccionadas:
-            story.append(Paragraph("━━━ PERFIL PROFESIONAL", styles['SectionHeader']))
-            
-            # Sobre mí
-            story.append(Paragraph(f"<b>Sobre mí:</b> {perfil.descripcionperfil}", styles['CustomBodyText']))
-            
-            # Tabla de información personal
-            info_data = [
-                [Paragraph('<b>Fecha de Nacimiento:</b>', styles['Normal']), 
-                 Paragraph(perfil.fechanacimiento.strftime('%d/%m/%Y'), styles['Normal']),
-                 Paragraph('<b>Nacionalidad:</b>', styles['Normal']),
-                 Paragraph(perfil.nacionalidad, styles['Normal'])],
-                
-                [Paragraph('<b>Lugar de Nacimiento:</b>', styles['Normal']), 
-                 Paragraph(perfil.lugarnacimiento, styles['Normal']),
-                 Paragraph('<b>Estado Civil:</b>', styles['Normal']),
-                 Paragraph(perfil.estadocivil, styles['Normal'])],
-            ]
-            # Justo antes de crear la tabla_info, asegúrate de que el estilo Normal tenga aire
-            styles['Normal'].leading = 14
+            story.append(Paragraph("SOBRE MÍ", styles['SectionHeading']))
+            story.append(Paragraph(perfil.descripcionperfil, styles['CustomBodyText']))
+            story.append(Spacer(1, 10))
 
-            tabla_info = Table(info_data, colWidths=[3.5*cm, 5*cm, 3*cm, 5*cm])
-            tabla_info.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, -1), COLOR_LIGHT_BG),
-                ('GRID', (0, 0), (-1, -1), 0.5, colors.white),
-                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-                ('LEFTPADDING', (0, 0), (-1, -1), 8),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 8),
-                ('TOPPADDING', (0, 0), (-1, -1), 8),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
-                ('FONTSIZE', (0, 0), (-1, -1), 9),
-            ]))
-            story.append(tabla_info)
-            story.append(Spacer(1, 0.5*cm))
-        
-        # ========== EXPERIENCIA LABORAL ==========
+        # ========== SECCIÓN: EXPERIENCIA (SALMÓN) ==========
         if 'experiencia' in secciones_seleccionadas:
-            experiencias = ExperienciaLaboral.objects.filter(
-                idperfilconqueestaactivo=perfil,
-                activarparaqueseveaenfront=True
-            ).order_by('-fechainiciogestion')
-            
-            if experiencias.exists():
-                story.append(Paragraph("━━━ EXPERIENCIA LABORAL", styles['SectionHeader']))
-                
-                for exp in experiencias:
-                    story.append(Paragraph(exp.cargodesempenado, styles['JobTitle']))
+            exps = ExperienciaLaboral.objects.filter(idperfilconqueestaactivo=perfil, activarparaqueseveaenfront=True).order_by('-fechainiciogestion')
+            if exps.exists():
+                story.append(Paragraph("<font color='#fb7185'>EXPERIENCIA LABORAL</font>", styles['SectionHeading']))
+                for exp in exps:
+                    fechas = f"{exp.fechainiciogestion.strftime('%Y')} - {exp.fechafingestion.strftime('%Y') if exp.fechafingestion else 'Presente'}"
                     
-                    fechas = f"{exp.fechainiciogestion.strftime('%b %Y')} - "
-                    fechas += exp.fechafingestion.strftime('%b %Y') if exp.fechafingestion else "Actual"
-                    
-                    empresa = f"<b>{exp.nombreempresa}</b> • {fechas}"
-                    if exp.lugarempresa:
-                        empresa += f" • {exp.lugarempresa}"
-                    
-                    story.append(Paragraph(empresa, styles['CompanyInfo']))
-                    
+                    data_exp = [[
+                        Paragraph(f"<b>{exp.cargodesempenado}</b><br/><font color='#64748b'>{exp.nombreempresa}</font>", styles['Normal']),
+                        Paragraph(fechas, styles['SmallGray'])
+                    ]]
+                    t = Table(data_exp, colWidths=[14*cm, 4*cm])
+                    t.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'TOP'), ('ALIGN', (1,0), (1,0), 'RIGHT')]))
+                    story.append(t)
                     if exp.descripcionfunciones:
-                        story.append(Paragraph(exp.descripcionfunciones, styles['CustomBodyText']))
+                        story.append(Paragraph(f"<font color='#64748b' size='9'>{exp.descripcionfunciones}</font>", styles['CustomBodyText']))
+                    story.append(Spacer(1, 6))
 
-                    if exp.rutacertificado:
-                        cert_url = exp.rutacertificado.url
-                        if '/image/upload/' in cert_url:
-                            cert_url = cert_url.replace('/image/upload/', '/raw/upload/')
-                        
-                        # El timestamp evita que el navegador cargue un error 404 viejo
-                        cert_url = f"{cert_url}?_={datetime.now().timestamp()}"
-                        
-                        story.append(Paragraph(
-                            f'<a href="{cert_url}" color="blue"><i>Ver certificado</i></a>',
-                            styles['SmallText']
-                    ))
-                        
-                    story.append(Spacer(1, 0.4*cm))
-        
-        # ========== RECONOCIMIENTOS ==========
-        if 'reconocimientos' in secciones_seleccionadas:
-            reconocimientos = Reconocimientos.objects.filter(
-                idperfilconqueestaactivo=perfil,
-                activarparaqueseveaenfront=True
-            ).order_by('-fechareconocimiento')
-            
-            if reconocimientos.exists():
-                story.append(Paragraph("━━━ RECONOCIMIENTOS", styles['SectionHeader']))
-                
-                for rec in reconocimientos:
-                    titulo = f"<b>{rec.tiporeconocimiento}</b> • {rec.fechareconocimiento.strftime('%b %Y')}"
-                    story.append(Paragraph(titulo, styles['JobTitle']))
-                    story.append(Paragraph(rec.descripcionreconocimiento, styles['CustomBodyText']))
-                    story.append(Paragraph(f"<i>Otorgado por: {rec.entidadpatrocinadora}</i>", styles['SmallGray']))
-                    if rec.rutacertificado:
-                        cert_url = rec.rutacertificado.url
-                        if '/image/upload/' in cert_url:
-                            cert_url = cert_url.replace('/image/upload/', '/raw/upload/')
-                        
-                        cert_url = f"{cert_url}?_={datetime.now().timestamp()}"
-                        
-                        story.append(Paragraph(
-                            f'<a href="{cert_url}" color="blue"><i>Ver certificado</i></a>',
-                            styles['SmallText']
-                    ))
-                    story.append(Spacer(1, 0.3*cm))
-        # ========== CURSOS Y CERTIFICACIONES ==========
+        # ========== SECCIÓN: CURSOS (MENTA) ==========
         if 'cursos' in secciones_seleccionadas:
-            cursos = CursosRealizados.objects.filter(
-                idperfilconqueestaactivo=perfil,
-                activarparaqueseveaenfront=True
-            ).order_by('-fechainicio')
-            
+            cursos = CursosRealizados.objects.filter(idperfilconqueestaactivo=perfil, activarparaqueseveaenfront=True)
             if cursos.exists():
-                story.append(Paragraph("━━━ CURSOS Y CERTIFICACIONES", styles['SectionHeader']))
-                
-                for curso in cursos:
-                    story.append(Paragraph(curso.nombrecurso, styles['JobTitle']))
-                    
-                    fechas = f"{curso.fechainicio.strftime('%b %Y')} - {curso.fechafin.strftime('%b %Y')} • {curso.totalhoras} horas"
-                    story.append(Paragraph(f"<b>{curso.entidadpatrocinadora}</b> • {fechas}", styles['CompanyInfo']))
-                    
-                    if curso.descripcioncurso:
-                        story.append(Paragraph(curso.descripcioncurso, styles['CustomBodyText']))
-                    if curso.rutacertificado:
-                        cert_url = curso.rutacertificado.url
-                        if '/image/upload/' in cert_url:
-                            cert_url = cert_url.replace('/image/upload/', '/raw/upload/')
-                        
-                        cert_url = f"{cert_url}?_={datetime.now().timestamp()}"
-                        
-                        story.append(Paragraph(
-                            f'<a href="{cert_url}" color="blue"><i>Ver certificado</i></a>',
-                            styles['SmallText']
-                        ))
-                    story.append(Spacer(1, 0.3*cm))
-        
-        # ========== PRODUCTOS ACADÉMICOS ==========
+                story.append(Paragraph("<font color='#10b981'>CERTIFICACIONES Y CURSOS</font>", styles['SectionHeading']))
+                for c in cursos:
+                    txt = f"<b>{c.nombrecurso}</b> | {c.entidadpatrocinadora} ({c.totalhoras}h)"
+                    story.append(Paragraph(txt, styles['Normal']))
+                    story.append(Spacer(1, 4))
+
+        # ========== SECCIÓN: PRODUCTOS (CIELO) ==========
         if 'productosacademicos' in secciones_seleccionadas:
-            productos = ProductosAcademicos.objects.filter(
-                idperfilconqueestaactivo=perfil,
-                activarparaqueseveaenfront=True
-            )
-            
-            if productos.exists():
-                story.append(Paragraph("━━━ PRODUCTOS ACADÉMICOS", styles['SectionHeader']))
-                
-                for prod in productos:
-                    story.append(Paragraph(f"<b>{prod.nombrerecurso}</b> ({prod.clasificador})", styles['JobTitle']))
-                    story.append(Paragraph(prod.descripcion, styles['CustomBodyText']))
-                    story.append(Spacer(1, 0.2*cm))
-        
-        # ========== PRODUCTOS LABORALES ==========
-        if 'productoslaborales' in secciones_seleccionadas:
-            productos = ProductosLaborales.objects.filter(
-                idperfilconqueestaactivo=perfil,
-                activarparaqueseveaenfront=True
-            ).order_by('-fechaproducto')
-            
-            if productos.exists():
-                story.append(Paragraph("━━━ PRODUCTOS LABORALES", styles['SectionHeader']))
-                
-                for prod in productos:
-                    story.append(Paragraph(f"<b>{prod.nombreproducto}</b> • {prod.fechaproducto.strftime('%b %Y')}", styles['JobTitle']))
-                    story.append(Paragraph(prod.descripcion, styles['CustomBodyText']))
-                    story.append(Spacer(1, 0.2*cm))
-        
-        # ========== VENTA GARAGE ==========
-        if 'ventagarage' in secciones_seleccionadas:
-            productos = VentaGarage.objects.filter(
-                idperfilconqueestaactivo=perfil,
-                activarparaqueseveaenfront=True
-            )
-            
-            if productos.exists():
-                story.append(Paragraph("━━━ ARTÍCULOS EN VENTA", styles['SectionHeader']))
-                
-                for prod in productos:
-                    # Intentar incluir imagen
-                    if prod.imagen_producto:
-                        try:
-                            response = requests.get(prod.imagen_producto.url, timeout=10)
-                            if response.status_code == 200:
-                                img_buffer = BytesIO(response.content)
-                                img = RLImage(img_buffer, width=3*cm, height=3*cm)
-                                
-                                info_text = f"""
-                                <b>{prod.nombreproducto}</b><br/>
-                                <font color='#6c757d'>Estado: {prod.estadoproducto}</font><br/>
-                                <font size='12' color='#198754'><b>${prod.valordelbien}</b></font><br/>
-                                <font size='9'>{prod.descripcion[:100]}</font>
-                                """
-                                
-                                tabla_prod = Table([[img, Paragraph(info_text, styles['Normal'])]], colWidths=[3.5*cm, None])
-                                tabla_prod.setStyle(TableStyle([
-                                    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-                                    ('BACKGROUND', (0, 0), (-1, -1), COLOR_LIGHT_BG),
-                                    ('PADDING', (0, 0), (-1, -1), 8),
-                                ]))
-                                story.append(tabla_prod)
-                                story.append(Spacer(1, 0.3*cm))
-                            else:
-                                raise Exception("No se pudo cargar imagen")
-                        except:
-                            # Sin imagen
-                            story.append(Paragraph(f"<b>{prod.nombreproducto}</b> • ${prod.valordelbien}", styles['JobTitle']))
-                            story.append(Paragraph(f"Estado: {prod.estadoproducto}", styles['SmallGray']))
-                            story.append(Paragraph(prod.descripcion, styles['CustomBodyText']))
-                    else:
-                        story.append(Paragraph(f"<b>{prod.nombreproducto}</b> • ${prod.valordelbien}", styles['JobTitle']))
-                        story.append(Paragraph(f"Estado: {prod.estadoproducto}", styles['SmallGray']))
-                        story.append(Paragraph(prod.descripcion, styles['CustomBodyText']))
-                    
-                    story.append(Spacer(1, 0.2*cm))
-        
-        # Generar PDF
+            prods = ProductosAcademicos.objects.filter(idperfilconqueestaactivo=perfil, activarparaqueseveaenfront=True)
+            if prods.exists():
+                story.append(Paragraph("<font color='#0ea5e9'>PROYECTOS ACADÉMICOS</font>", styles['SectionHeading']))
+                for p in prods:
+                    story.append(Paragraph(f"• <b>{p.nombrerecurso}</b>: {p.descripcion}", styles['NormalMini']))
+                    story.append(Spacer(1, 3))
+
+        # Construir con el FooterCanvas que ya tienes
         doc.build(story, canvasmaker=FooterCanvas)
         
         buffer.seek(0)
         response = HttpResponse(buffer.read(), content_type='application/pdf')
-        filename = slugify(f"cv {perfil.nombres} {perfil.apellidos}")
-        response['Content-Disposition'] = f'inline; filename="{filename}.pdf"'
-        response['Content-Transfer-Encoding'] = 'binary'
-        
+        response['Content-Disposition'] = f'inline; filename="CV_{slugify(perfil.nombres)}.pdf"'
         return response
-    
+
     except Exception as e:
-        error_traceback = traceback.format_exc()
-        print("ERROR AL GENERAR PDF:")
-        print(error_traceback)
-        return JsonResponse({'error': str(e), 'traceback': error_traceback}, status=500)
+        return JsonResponse({'error': str(e)}, status=500)
