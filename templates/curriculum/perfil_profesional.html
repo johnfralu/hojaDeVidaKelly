@@ -343,13 +343,13 @@
                 
                 <ul class="preview-list">
                     {% for prod in productos_academicos|slice:":3" %}
-                    <li class="preview-list-item">
-                        <div class="d-flex flex-column">
-                            <span class="fw-bold" style="font-size: 0.9rem;">{{ prod.nombrerecurso }}</span>
-                            <small style="color: #0ea5e9; font-weight: 600; font-size: 0.75rem;">
-                                <i class="bi bi-tag-fill"></i> {{ prod.clasificador }}
-                            </small>
-                        </div>
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-truncate" style="font-size: 0.9rem; max-width: 70%;">
+                            {{ prod.nombrerecurso }}
+                        </span>
+                        <small class="ms-2 text-end" style="color: #0ea5e9; font-weight: 600; font-size: 0.75rem; white-space: nowrap;">
+                            <i class="bi bi-tag-fill"></i> {{ prod.clasificador }}
+                        </small>
                     </li>
                     {% empty %}
                     <li class="preview-list-empty">No hay productos académicos registrados</li>
