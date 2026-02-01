@@ -12,7 +12,7 @@ p, h1, h2, h3, h4, h5, h6, span {
 /* Estilos Generales */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: transparent; /* CAMBIO: De #f8f9fa a transparente */
+    background-color: transparent !important;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -79,6 +79,12 @@ p, li, div {
     background-color: rgba(255, 255, 255, 0.85); /* Blanco con 85% de opacidad */
     backdrop-filter: blur(10px); /* Esto hace que el fondo se vea borroso detrás de la card */
     -webkit-backdrop-filter: blur(10px);
+}
+
+.card, .experience-card-pastel, .recognition-container, .course-container {
+    background-color: rgba(255, 255, 255, 0.9) !important; /* Blanco semi-transparente */
+    backdrop-filter: blur(10px); /* Desenfoque elegante */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 .card:hover {
