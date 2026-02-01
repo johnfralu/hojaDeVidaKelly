@@ -3,44 +3,47 @@
 {% block title %}{{ page_title }} - Hoja de Vida{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-primary">
-                <i class="bi bi-folder-fill"></i> Productos Laborales
+<div class="container-fluid py-4">
+    <div class="row mb-5 text-center">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold section-title-lab">
+                <i class="bi bi-briefcase-fill"></i> Productos Laborales
             </h1>
-            <hr class="w-50 mx-auto">
+            <p class="text-muted">Resultados, informes y entregables desarrollados en el ejercicio profesional.</p>
+            <div class="custom-hr-lab mx-auto"></div>
         </div>
     </div>
-</div>
 
-{% if productos %}
-<div class="row">
-    {% for producto in productos %}
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow border-0 h-100">
-            <div class="card-header bg-secondary text-white">
-                <h5 class="card-title mb-1">
-                    <i class="bi bi-file-earmark-check"></i> {{ producto.nombreproducto }}
-                </h5>
-                <small>
-                    <i class="bi bi-calendar3"></i> {{ producto.fechaproducto|date:"d/m/Y" }}
-                </small>
-            </div>
-            <div class="card-body">
-                <div class="mt-2">
-                    <h6 class="text-secondary">Descripción:</h6>
-                    <p class="text-muted">{{ producto.descripcion }}</p>
+    {% if productos %}
+    <div class="row justify-content-center">
+        {% for producto in productos %}
+        <div class="col-lg-10 mb-4">
+            <div class="product-card-salmon shadow-sm">
+                <div class="lab-header-flex">
+                    <div class="lab-title-area">
+                        <h3 class="lab-name">{{ producto.nombreproducto }}</h3>
+                        <span class="badge-salmon-date">
+                            <i class="bi bi-calendar-check"></i> {{ producto.fechaproducto|date:"d/m/Y" }}
+                        </span>
+                    </div>
+                </div>
+                
+                <hr class="soft-hr-salmon">
+                
+                <div class="lab-body">
+                    <h6 class="text-uppercase small fw-bold text-muted mb-2">
+                        <i class="bi bi-card-text"></i> Detalle del Producto:
+                    </h6>
+                    <p class="lab-desc">{{ producto.descripcion }}</p>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    {% else %}
+    <div class="alert alert-salmon-pastel text-center mx-auto" style="max-width: 600px;">
+        <i class="bi bi-info-circle"></i> No hay productos laborales registrados.
+    </div>
+    {% endif %}
 </div>
-{% else %}
-<div class="alert alert-info text-center">
-    <i class="bi bi-info-circle"></i>
-    <strong>No hay productos laborales registrados.</strong>
-</div>
-{% endif %}
 {% endblock %}

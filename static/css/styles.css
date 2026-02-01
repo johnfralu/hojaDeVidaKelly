@@ -734,3 +734,77 @@ footer {
     border-radius: 15px;
     font-weight: 600;
 }
+
+/* Paleta Salmón Pastel para Productos Laborales */
+:root {
+    --salmon-main: #f43f5e;     /* Salmón intenso para bordes e iconos */
+    --salmon-soft: #fff1f2;     /* Fondo salmón muy suave */
+    --lab-text-dark: #475569;   /* Gris pizarra para el texto */
+}
+
+.section-title-lab {
+    color: var(--lab-text-dark);
+}
+
+.custom-hr-lab {
+    width: 80px;
+    height: 5px;
+    background: var(--salmon-main);
+    border-radius: 10px;
+}
+
+/* Tarjeta Laboral */
+.product-card-salmon {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 2rem;
+    border-left: 8px solid var(--salmon-main);
+    transition: all 0.3s ease;
+}
+
+.product-card-salmon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(244, 63, 94, 0.1) !important;
+}
+
+.lab-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lab-name {
+    font-weight: 800;
+    color: var(--lab-text-dark);
+    margin-bottom: 0.6rem;
+}
+
+.badge-salmon-date {
+    background-color: var(--salmon-soft);
+    color: var(--salmon-main);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-block;
+}
+
+.soft-hr-salmon {
+    border: 0;
+    border-top: 1px solid #fff1f2;
+    margin: 1.5rem 0;
+}
+
+.lab-desc {
+    color: #64748b;
+    line-height: 1.7;
+}
+
+/* Alert Estilo Salmón */
+.alert-salmon-pastel {
+    background-color: var(--salmon-soft);
+    color: #be123c;
+    border: none;
+    border-radius: 15px;
+    font-weight: 600;
+}
