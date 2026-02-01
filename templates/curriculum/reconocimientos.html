@@ -25,12 +25,9 @@
             <div class="rec-info-side">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <span class="badge-year-pastel">{{ rec.fechareconocimiento|date:"Y" }}</span>
-                    <span class="text-muted small fw-bold text-uppercase">
-                        <i class="bi bi-tag-fill"></i> {{ rec.tiporeconocimiento }}
-                    </span>
                 </div>
                 
-                <h3 class="rec-title">{{ rec.descripcionreconocimiento|truncatechars:80 }}</h3>
+                <h3 class="rec-title">{{ rec.tiporeconocimiento }}</h3>
                 <h5 class="rec-institution">
                     <i class="bi bi-bank"></i> {{ rec.entidadpatrocinadora }}
                 </h5>
