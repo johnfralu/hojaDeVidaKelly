@@ -36,7 +36,7 @@
             </button>
         </div>
 
-                <!-- Foto pequeña (solo visible contraído) -->
+        <!-- Foto pequeña (solo visible contraído) -->
         <div class="sidebar-perfil-mini">
             <a href="{% url 'curriculum:perfil_profesional' %}">
                 {% if perfil and perfil.foto_perfil %}
@@ -341,8 +341,8 @@
                 minWidth: 200.00,
                 scale: 1.00,
                 scaleMobile: 1.00,
-                color: 0x81d8d0, // Líneas color Azul Tiffany
-                backgroundColor: 0xffffff, // Color de fondo (Blanco puro)
+                color: 0x81d8d0,
+                backgroundColor: 0xffffff,
                 points: 12.00,
                 maxDistance: 22.00,
                 spacing: 16.00
@@ -600,9 +600,8 @@
 
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
             
-            // Si pasamos de 300px, mostrar
             if (scrollTop > 300) {
-                scrollBtn.classList.add('show'); // Es mejor usar clases que .style.display
+                scrollBtn.classList.add('show');
                 scrollBtn.style.display = "flex"; 
             } else {
                 scrollBtn.classList.remove('show');

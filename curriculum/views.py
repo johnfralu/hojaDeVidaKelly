@@ -29,16 +29,12 @@ def actualizar_configuracion(request):
         data = json.loads(request.body)
         perfil = get_perfil_activo()
         
-        # 1. Guardar en sesión como respaldo
         request.session['config_pdf'] = data
         request.session.modified = True
         
-        # 2. Persistir en Base de Datos
         if perfil:
-            # get_or_create asegura que si no existe el registro para ese perfil, se cree uno
             config, created = ConfiguracionSecciones.objects.get_or_create(perfil=perfil)
             
-            # Mapeo explícito para evitar errores de nombres de campos
             config.mostrar_perfil = data.get('perfil', data.get('mostrar_perfil', True))
             config.mostrar_experiencia = data.get('experiencia', data.get('mostrar_experiencia', True))
             config.mostrar_reconocimientos = data.get('reconocimientos', data.get('mostrar_reconocimientos', True))
@@ -57,22 +53,19 @@ def actualizar_configuracion(request):
         return JsonResponse({'success': False, 'error': str(e)}, status=400)
     
 def get_perfil_activo():
-    """Obtiene el perfil marcado como activo o el primero disponible"""
     perfil = DatosPersonales.objects.filter(perfilactivo=1).first()
     if not perfil:
-        perfil = DatosPersonales.objects.first() # Plan B: El primero de la lista
+        perfil = DatosPersonales.objects.first()
     return perfil
 
 def get_configuracion(perfil):
-    """Obtiene o crea la configuración de secciones"""
     config, created = ConfiguracionSecciones.objects.get_or_create(perfil=perfil)
     return config
 
 def perfil_profesional(request):
-    perfil = get_perfil_activo() # Mejor usar tu función helper
+    perfil = get_perfil_activo()
     config = get_configuracion(perfil)
     
-    # Obtener previews de cada sección (solo los activos)
     experiencias = ExperienciaLaboral.objects.filter(activarparaqueseveaenfront=True).order_by('-fechainiciogestion')
     cursos = CursosRealizados.objects.filter(activarparaqueseveaenfront=True).order_by('-fechainicio')
     reconocimientos = Reconocimientos.objects.filter(activarparaqueseveaenfront=True).order_by('-fechareconocimiento')
@@ -94,7 +87,6 @@ def perfil_profesional(request):
     return render(request, 'curriculum/perfil_profesional.html', context)
 
 def experiencia_laboral(request):
-    """Vista de Experiencia Laboral"""
     perfil = get_perfil_activo()
     config = get_configuracion(perfil) if perfil else None
     experiencias = ExperienciaLaboral.objects.filter(
@@ -111,7 +103,6 @@ def experiencia_laboral(request):
     return render(request, 'curriculum/experiencia_laboral.html', context)
 
 def reconocimientos(request):
-    """Vista de Reconocimientos"""
     perfil = get_perfil_activo()
     config = get_configuracion(perfil) if perfil else None
     reconocimientos_list = Reconocimientos.objects.filter(
@@ -128,7 +119,6 @@ def reconocimientos(request):
     return render(request, 'curriculum/reconocimientos.html', context)
 
 def cursos_realizados(request):
-    """Vista de Cursos Realizados"""
     perfil = get_perfil_activo()
     config = get_configuracion(perfil) if perfil else None
     cursos = CursosRealizados.objects.filter(
@@ -145,7 +135,6 @@ def cursos_realizados(request):
     return render(request, 'curriculum/cursos_realizados.html', context)
 
 def productos_academicos(request):
-    """Vista de Productos Académicos"""
     perfil = get_perfil_activo()
     config = get_configuracion(perfil) if perfil else None
     productos = ProductosAcademicos.objects.filter(
@@ -162,7 +151,6 @@ def productos_academicos(request):
     return render(request, 'curriculum/productos_academicos.html', context)
 
 def productos_laborales(request):
-    """Vista de Productos Laborales"""
     perfil = get_perfil_activo()
     config = get_configuracion(perfil) if perfil else None
     productos = ProductosLaborales.objects.filter(
@@ -179,7 +167,6 @@ def productos_laborales(request):
     return render(request, 'curriculum/productos_laborales.html', context)
 
 def venta_garage(request):
-    """Vista de Venta Garage"""
     perfil = get_perfil_activo()
     config = get_configuracion(perfil) if perfil else None
     productos = VentaGarage.objects.filter(
@@ -196,7 +183,6 @@ def venta_garage(request):
     return render(request, 'curriculum/venta_garage.html', context)
 
 class NumberedCanvas(canvas.Canvas):
-    """Canvas personalizado para agregar número de página y encabezado"""
     def __init__(self, *args, **kwargs):
         canvas.Canvas.__init__(self, *args, **kwargs)
         self._saved_page_states = []
@@ -222,7 +208,6 @@ class NumberedCanvas(canvas.Canvas):
         )
 
 def fecha_en_espanol(fecha):
-    """Convierte una fecha a formato: 26 de enero de 2026"""
     meses = {
         1: "enero", 2: "febrero", 3: "marzo", 4: "abril", 
         5: "mayo", 6: "junio", 7: "julio", 8: "agosto", 
@@ -234,7 +219,6 @@ def fecha_en_espanol(fecha):
     return f"{dia} de {mes} de {anio}"
 
 class FooterCanvas(canvas.Canvas):
-    """Canvas con pie de página personalizado"""
     def __init__(self, *args, **kwargs):
         canvas.Canvas.__init__(self, *args, **kwargs)
         self.pages = []
@@ -267,7 +251,6 @@ class FooterCanvas(canvas.Canvas):
 
 @csrf_exempt
 def generar_pdf(request):
-    """Genera PDF profesional de hoja de vida"""
     try:
         if request.method != 'POST':
             return HttpResponse({'error': 'Método no permitido'}, status=405)
@@ -275,7 +258,6 @@ def generar_pdf(request):
         try:
             data = json.loads(request.body)
         except:
-            # Si el JS envía mal los datos, tomamos todo por defecto
             data = {'secciones': ['perfil', 'experiencia', 'reconocimientos', 'cursos']}
         
         secciones_seleccionadas = data.get('secciones', [])
@@ -289,7 +271,6 @@ def generar_pdf(request):
         
         config = get_configuracion(perfil)
 
-        # Configurar PDF
         buffer = BytesIO()
         doc = SimpleDocTemplate(
             buffer,
@@ -301,49 +282,37 @@ def generar_pdf(request):
             title=f"CV - {perfil.nombres} {perfil.apellidos}"
         )
         
-        # Colores pasteles profesionales
-        COLOR_PRIMARY = colors.HexColor('#A7C7E7')  # Azul pastel (Soft Blue)
-        COLOR_DARK = colors.HexColor('#555555')     # Gris oscuro suave para texto
-        COLOR_GRAY = colors.HexColor('#999999')     # Gris claro
-        COLOR_LIGHT_BG = colors.HexColor('#F4F7F9') # Fondo azul grisáceo muy tenue
-        # 1. DEFINIR COLORES (Estos son los que usas en tus estilos personalizados)
-        color_primario = colors.HexColor('#A7C7E7')    # Azul pastel
-        color_secundario = colors.HexColor('#B2B2B2')  # Gris suave
-        color_fondo = colors.HexColor('#FAF9F6')       # Crema/Blanco roto
+        COLOR_PRIMARY = colors.HexColor('#A7C7E7')  
+        COLOR_DARK = colors.HexColor('#555555')    
+        COLOR_GRAY = colors.HexColor('#999999')     
+        COLOR_LIGHT_BG = colors.HexColor('#F4F7F9') 
 
-        # Estilos
+        color_primario = colors.HexColor('#A7C7E7')   
+        color_secundario = colors.HexColor('#B2B2B2') 
+        color_fondo = colors.HexColor('#FAF9F6')       
+
         styles = getSampleStyleSheet()
 
-        # Función auxiliar para añadir o actualizar estilos sin que explote
         def add_style(name, parent, **kwargs):
             if name in styles:
-                # Si ya existe, lo modificamos
                 for key, value in kwargs.items():
                     setattr(styles[name], key, value)
             else:
-                # Si no existe, lo creamos
                 styles.add(ParagraphStyle(name=name, parent=parent, **kwargs))
 
-        # --- Definición de tus estilos personalizados ---
-        
-        # Título principal
         add_style('MainTitle', styles['Heading1'], fontSize=24, textColor=color_primario, 
                   alignment=TA_CENTER, fontName='Helvetica-Bold', spaceAfter=6)
         
-        # Título de sección (con fondo azul)
         add_style('SectionTitle', styles['Heading2'], fontSize=14, textColor=colors.white, 
                   backColor=color_primario, fontName='Helvetica-Bold', leftIndent=10, 
                   rightIndent=10, leading=20, spaceBefore=12, spaceAfter=12)
 
-        # Texto Justificado (tu reemplazo para BodyText para evitar el KeyError)
         add_style('Justified', styles['Normal'], fontSize=10, alignment=TA_JUSTIFY, 
                   leading=16, spaceAfter=10)
 
-        # EL QUE TE DA EL ERROR: SmallText
         add_style('SmallText', styles['Normal'], fontSize=9, textColor=color_secundario, 
                   leading=14)
         
-        # EntryTitle
         add_style('EntryTitle', styles['Normal'], fontSize=12, textColor=color_primario, 
                   fontName='Helvetica-Bold', spaceAfter=4)
         
@@ -418,13 +387,10 @@ def generar_pdf(request):
             leading=12
         ))
         
-        # Contenido
         story = []
         
-        # ========== ENCABEZADO CON FOTO ==========
         header_table_data = []
         
-        # Intentar cargar foto
         foto_col = []
         if perfil.foto_perfil:
             try:
@@ -432,15 +398,12 @@ def generar_pdf(request):
                 response = requests.get(img_url, timeout=10)
                 
                 if response.status_code == 200:
-                    # Procesar imagen
                     img_data = BytesIO(response.content)
                     pil_img = PILImage.open(img_data)
                     
-                    # Redimensionar manteniendo aspecto
                     img_width = 4*cm
                     img_height = 4*cm
                     
-                    # Crear imagen para ReportLab
                     img_buffer = BytesIO()
                     pil_img.save(img_buffer, format='PNG')
                     img_buffer.seek(0)
@@ -451,12 +414,10 @@ def generar_pdf(request):
                 print(f"Error cargando foto: {e}")
                 foto_col = [Paragraph("", styles['Normal'])]
         
-        # Información del encabezado
         nombre_completo = f"{perfil.nombres} {perfil.apellidos}"
         
         info_col = []
         info_col.append(Paragraph(nombre_completo, styles['CVTitle']))
-        # Combinamos Cédula y contacto en un solo Paragraph para mejor control
         contacto_linea = f"Cédula: {perfil.numerocedula}"
         contacto_datos = []
         if perfil.telefonoconvencional: contacto_datos.append(perfil.telefonoconvencional)
@@ -480,7 +441,6 @@ def generar_pdf(request):
         if contacto_items:
             info_col.append(Paragraph(" | ".join(contacto_items), styles['SmallGray']))
         
-        # Tabla del encabezado
         if foto_col:
             header_table = Table([[foto_col, info_col]], colWidths=[5*cm, None])
             header_table.setStyle(TableStyle([
@@ -493,7 +453,6 @@ def generar_pdf(request):
             for item in info_col:
                 story.append(item)
         
-        # Línea separadora
         story.append(Spacer(1, 0.3*cm))
         sep_table = Table([['']], colWidths=[doc.width])
         sep_table.setStyle(TableStyle([
@@ -501,15 +460,13 @@ def generar_pdf(request):
         ]))
         story.append(sep_table)
         story.append(Spacer(1, 0.3*cm))
-        
+
         # ========== PERFIL PROFESIONAL ==========
         if 'perfil' in secciones_seleccionadas:
             story.append(Paragraph("━━━ PERFIL PROFESIONAL", styles['SectionHeader']))
             
-            # Sobre mí
             story.append(Paragraph(f"<b>Sobre mí:</b> {perfil.descripcionperfil}", styles['CustomBodyText']))
             
-            # Tabla de información personal
             info_data = [
                 [Paragraph('<b>Fecha de Nacimiento:</b>', styles['Normal']), 
                  Paragraph(perfil.fechanacimiento.strftime('%d/%m/%Y'), styles['Normal']),
@@ -521,7 +478,6 @@ def generar_pdf(request):
                  Paragraph('<b>Estado Civil:</b>', styles['Normal']),
                  Paragraph(perfil.estadocivil, styles['Normal'])],
             ]
-            # Justo antes de crear la tabla_info, asegúrate de que el estilo Normal tenga aire
             styles['Normal'].leading = 14
 
             tabla_info = Table(info_data, colWidths=[3.5*cm, 5*cm, 3*cm, 5*cm])
@@ -568,7 +524,6 @@ def generar_pdf(request):
                         if '/image/upload/' in cert_url:
                             cert_url = cert_url.replace('/image/upload/', '/raw/upload/')
                         
-                        # El timestamp evita que el navegador cargue un error 404 viejo
                         cert_url = f"{cert_url}?_={datetime.now().timestamp()}"
                         
                         story.append(Paragraph(
@@ -677,7 +632,6 @@ def generar_pdf(request):
                 story.append(Paragraph("━━━ ARTÍCULOS EN VENTA", styles['SectionHeader']))
                 
                 for prod in productos:
-                    # Intentar incluir imagen
                     if prod.imagen_producto:
                         try:
                             response = requests.get(prod.imagen_producto.url, timeout=10)
@@ -703,7 +657,6 @@ def generar_pdf(request):
                             else:
                                 raise Exception("No se pudo cargar imagen")
                         except:
-                            # Sin imagen
                             story.append(Paragraph(f"<b>{prod.nombreproducto}</b> • ${prod.valordelbien}", styles['JobTitle']))
                             story.append(Paragraph(f"Estado: {prod.estadoproducto}", styles['SmallGray']))
                             story.append(Paragraph(prod.descripcion, styles['CustomBodyText']))

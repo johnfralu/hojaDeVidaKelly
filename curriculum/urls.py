@@ -12,5 +12,5 @@ urlpatterns = [
     path('productos-laborales/', views.productos_laborales, name='productos_laborales'),
     path('venta-garage/', views.venta_garage, name='venta_garage'),
     path('api/configuracion/', views.actualizar_configuracion, name='actualizar_configuracion'),
-    path('api/generar-pdf/', views.generar_pdf, name='generar_pdf'),  # NUEVA LÍNEA
+    path('api/generar-pdf/', views.generar_pdf, name='generar_pdf'),
 ]

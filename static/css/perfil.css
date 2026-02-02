@@ -472,7 +472,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 70%; /* Ajusta según prefieras */
+    max-width: 70%;
 }
 
 .preview-list-empty {

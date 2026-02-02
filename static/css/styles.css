@@ -50,14 +50,13 @@ p, li, div {
 
 /* Forzar una sola línea en el Navbar */
 .navbar-nav .nav-link {
-    /*white-space: nowrap;      Evita que el texto salte de línea (lo desactivé)*/
     padding-left: 0.8rem !important;
     padding-right: 0.8rem !important;
-    font-size: 0.95rem;       /* Ajuste ligero de tamaño para que quepan todos */
+    font-size: 0.95rem;
 }
 
 .navbar .container-fluid {
-    flex-wrap: nowrap; /* Mantiene el logo y el botón de hamburguesa en la misma línea */
+    flex-wrap: nowrap; 
 }
 
 .nav-link:hover {
@@ -220,7 +219,6 @@ footer {
         margin-bottom: 2rem;
     }
     
-    /* Ajustamos el contenedor de botones, no el botón individual */
     .floating-buttons-container {
         right: 15px;
         bottom: 15px;
@@ -373,7 +371,7 @@ footer {
     bottom: 30px;
     right: 30px;
     display: flex;
-    flex-direction: column-reverse; /* El último en el HTML será el de abajo */
+    flex-direction: column-reverse;
     gap: 15px;
     z-index: 1050;
     align-items: center;
@@ -381,7 +379,7 @@ footer {
 
 /* Estilo base de los botones circulares */
 .btn-float {
-    width: 60px;  /* Un poquito más grandes para que luzca el icono */
+    width: 60px;
     height: 60px;
     border-radius: 50%;
     border: none;
@@ -414,7 +412,6 @@ footer {
 .btn-admin { background-color: #6c757d; }  /* Gris */
 .btn-config { background-color: #0d6efd; } /* Azul */
 
-/* Ajuste para que los checks del modal no se vean amontonados */
 .modal-body .form-check {
     margin-bottom: 12px;
     font-size: 1.1rem;
@@ -937,7 +934,7 @@ footer {
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 700;
-    text-transform: uppercase; /* <--- El cambio está aquí */
+    text-transform: uppercase;
 }
 
 .status-good { background: #dcfce7; color: #15803d; }

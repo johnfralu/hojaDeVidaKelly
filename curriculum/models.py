@@ -219,7 +219,6 @@ class VentaGarage(models.Model):
 
 
 class ConfiguracionSecciones(models.Model):
-    """Modelo para controlar qué secciones se muestran en el navbar"""
     perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE)
     mostrar_perfil = models.BooleanField(default=True, verbose_name='Mostrar Perfil Profesional')
     mostrar_experiencia = models.BooleanField(default=True, verbose_name='Mostrar Experiencia Laboral')
